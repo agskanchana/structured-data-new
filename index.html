@@ -1066,25 +1066,51 @@
                     const rawUrl = `https://raw.githubusercontent.com/${owner}/${repoName}/main/${path}`;
                     const htmlPreviewUrl = `https://htmlpreview.github.io/?${rawUrl}`;
                     
-                    // Try to shorten the URL using shrtco.de API
+                    // Try to shorten the URL using multiple free URL shorteners
                     document.getElementById('uploadBtn').innerHTML = '<span class="loading"></span> Shortening URL...';
                     
                     let finalUrl = htmlPreviewUrl;
+                    let shortened = false;
+                    
+                    // Try TinyURL first (most reliable)
                     try {
-                        const shortResponse = await fetch(`https://api.shrtco.de/v2/shorten?url=${encodeURIComponent(htmlPreviewUrl)}`);
-                        if (shortResponse.ok) {
-                            const shortData = await shortResponse.json();
-                            if (shortData.ok && shortData.result && shortData.result.full_short_link) {
-                                finalUrl = shortData.result.full_short_link;
+                        const tinyResponse = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(htmlPreviewUrl)}`);
+                        if (tinyResponse.ok) {
+                            const tinyUrl = await tinyResponse.text();
+                            if (tinyUrl && tinyUrl.startsWith('http')) {
+                                finalUrl = tinyUrl;
+                                shortened = true;
                             }
                         }
                     } catch (e) {
-                        // If shortening fails, use full URL
-                        console.log('URL shortening failed, using full URL:', e);
+                        console.log('TinyURL failed, trying alternative:', e);
+                    }
+                    
+                    // Try is.gd as fallback
+                    if (!shortened) {
+                        try {
+                            const isgdResponse = await fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(htmlPreviewUrl)}`);
+                            if (isgdResponse.ok) {
+                                const isgdUrl = await isgdResponse.text();
+                                if (isgdUrl && isgdUrl.startsWith('http')) {
+                                    finalUrl = isgdUrl;
+                                    shortened = true;
+                                }
+                            }
+                        } catch (e) {
+                            console.log('is.gd failed, using full URL:', e);
+                        }
                     }
                     
                     document.getElementById('reportLinkInput').value = finalUrl;
                     document.getElementById('reportLinkBox').style.display = 'block';
+                    
+                    // Show if URL was shortened or not
+                    if (shortened) {
+                        console.log('✓ URL shortened successfully');
+                    } else {
+                        console.log('⚠ Using full URL (shortening services unavailable)');
+                    }
                     
                     // Scroll to the link box
                     document.getElementById('reportLinkBox').scrollIntoView({ behavior: 'smooth' });
