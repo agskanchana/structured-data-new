@@ -1066,19 +1066,21 @@
                     const rawUrl = `https://raw.githubusercontent.com/${owner}/${repoName}/main/${path}`;
                     const htmlPreviewUrl = `https://htmlpreview.github.io/?${rawUrl}`;
                     
-                    // Try to shorten the URL using multiple free URL shorteners
+                    // Try to shorten the URL using CORS proxy
                     document.getElementById('uploadBtn').innerHTML = '<span class="loading"></span> Shortening URL...';
                     
                     let finalUrl = htmlPreviewUrl;
                     let shortened = false;
                     
-                    // Try TinyURL first (most reliable)
+                    // Try TinyURL with CORS proxy
                     try {
-                        const tinyResponse = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(htmlPreviewUrl)}`);
+                        const tinyUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(htmlPreviewUrl)}`;
+                        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(tinyUrl)}`;
+                        const tinyResponse = await fetch(proxyUrl);
                         if (tinyResponse.ok) {
-                            const tinyUrl = await tinyResponse.text();
-                            if (tinyUrl && tinyUrl.startsWith('http')) {
-                                finalUrl = tinyUrl;
+                            const shortUrl = await tinyResponse.text();
+                            if (shortUrl && shortUrl.startsWith('http') && !shortUrl.includes('Error')) {
+                                finalUrl = shortUrl.trim();
                                 shortened = true;
                             }
                         }
@@ -1086,14 +1088,16 @@
                         console.log('TinyURL failed, trying alternative:', e);
                     }
                     
-                    // Try is.gd as fallback
+                    // Try is.gd with CORS proxy as fallback
                     if (!shortened) {
                         try {
-                            const isgdResponse = await fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(htmlPreviewUrl)}`);
+                            const isgdUrl = `https://is.gd/create.php?format=simple&url=${encodeURIComponent(htmlPreviewUrl)}`;
+                            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(isgdUrl)}`;
+                            const isgdResponse = await fetch(proxyUrl);
                             if (isgdResponse.ok) {
-                                const isgdUrl = await isgdResponse.text();
-                                if (isgdUrl && isgdUrl.startsWith('http')) {
-                                    finalUrl = isgdUrl;
+                                const shortUrl = await isgdResponse.text();
+                                if (shortUrl && shortUrl.startsWith('http') && !shortUrl.includes('Error')) {
+                                    finalUrl = shortUrl.trim();
                                     shortened = true;
                                 }
                             }
