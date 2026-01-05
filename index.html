@@ -703,7 +703,12 @@
                 const start = i * BATCH_SIZE + 1;
                 const end = Math.min((i + 1) * BATCH_SIZE, allUrls.length);
                 const colorClass = `batch-${(i % 10) + 1}`;
-                html += `<button class="batch-btn ${colorClass}" onclick="openBatch(${i})">Batch ${i + 1} (${start}-${end})</button>`;
+                html += `
+                    <div style="display: inline-flex; gap: 5px; align-items: center;">
+                        <button class="batch-btn ${colorClass}" onclick="openBatch(${i})" style="border-radius: 6px 0 0 6px;">Batch ${i + 1} (${start}-${end})</button>
+                        <button class="batch-btn ${colorClass}" onclick="markBatchPassed(${i})" title="Mark all in this batch as passed" style="padding: 8px 10px; border-radius: 0 6px 6px 0; opacity: 0.9;">✓</button>
+                    </div>
+                `;
             }
             container.innerHTML = html;
         }
@@ -842,6 +847,27 @@
                 }
             });
             renderResults();
+        }
+        
+        function markBatchPassed(batchIndex) {
+            const start = batchIndex * BATCH_SIZE;
+            const end = Math.min(start + BATCH_SIZE, allUrls.length);
+            
+            for (let i = start; i < end; i++) {
+                const url = allUrls[i];
+                if (urlStatuses[url].status === 'pending') {
+                    urlStatuses[url].status = 'pass';
+                }
+                
+                // Hide the item
+                const item = document.querySelector(`.url-item[data-index="${i}"]`);
+                if (item) {
+                    item.classList.add('hidden');
+                }
+            }
+            
+            renderResults();
+            checkAllCompleted();
         }
         
         function resetAll() {
