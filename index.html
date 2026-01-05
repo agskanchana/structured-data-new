@@ -1066,54 +1066,41 @@
                     const rawUrl = `https://raw.githubusercontent.com/${owner}/${repoName}/main/${path}`;
                     const htmlPreviewUrl = `https://htmlpreview.github.io/?${rawUrl}`;
                     
-                    // Try to shorten the URL using CORS proxy
+                    // Try to shorten the URL using jo4.io API
                     document.getElementById('uploadBtn').innerHTML = '<span class="loading"></span> Shortening URL...';
                     
                     let finalUrl = htmlPreviewUrl;
                     let shortened = false;
                     
-                    // Try TinyURL with CORS proxy
+                    // Try jo4.io shortener
                     try {
-                        const tinyUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(htmlPreviewUrl)}`;
-                        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(tinyUrl)}`;
-                        const tinyResponse = await fetch(proxyUrl);
-                        if (tinyResponse.ok) {
-                            const shortUrl = await tinyResponse.text();
-                            if (shortUrl && shortUrl.startsWith('http') && !shortUrl.includes('Error')) {
-                                finalUrl = shortUrl.trim();
+                        const jo4Response = await fetch('https://jo4-api.jo4.io/api/v1/protected/url', {
+                            method: 'POST',
+                            headers: {
+                                'X-API-Key': 'jo4_live_46db11adf6e38a4d7af21fc151e8aa002d8e738b3f593eb650a58f9d197bf241',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ longUrl: htmlPreviewUrl })
+                        });
+                        
+                        if (jo4Response.ok) {
+                            const jo4Data = await jo4Response.json();
+                            if (jo4Data && jo4Data.shortUrl) {
+                                finalUrl = jo4Data.shortUrl;
                                 shortened = true;
+                                console.log('✓ URL shortened successfully with jo4.io:', finalUrl);
                             }
                         }
                     } catch (e) {
-                        console.log('TinyURL failed, trying alternative:', e);
-                    }
-                    
-                    // Try is.gd with CORS proxy as fallback
-                    if (!shortened) {
-                        try {
-                            const isgdUrl = `https://is.gd/create.php?format=simple&url=${encodeURIComponent(htmlPreviewUrl)}`;
-                            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(isgdUrl)}`;
-                            const isgdResponse = await fetch(proxyUrl);
-                            if (isgdResponse.ok) {
-                                const shortUrl = await isgdResponse.text();
-                                if (shortUrl && shortUrl.startsWith('http') && !shortUrl.includes('Error')) {
-                                    finalUrl = shortUrl.trim();
-                                    shortened = true;
-                                }
-                            }
-                        } catch (e) {
-                            console.log('is.gd failed, using full URL:', e);
-                        }
+                        console.log('jo4.io shortening failed, using full URL:', e);
                     }
                     
                     document.getElementById('reportLinkInput').value = finalUrl;
                     document.getElementById('reportLinkBox').style.display = 'block';
                     
                     // Show if URL was shortened or not
-                    if (shortened) {
-                        console.log('✓ URL shortened successfully');
-                    } else {
-                        console.log('⚠ Using full URL (shortening services unavailable)');
+                    if (!shortened) {
+                        console.log('⚠ Using full URL (shortening service unavailable)');
                     }
                     
                     // Scroll to the link box
