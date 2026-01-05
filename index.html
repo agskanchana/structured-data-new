@@ -173,17 +173,9 @@
             margin-bottom: 4px;
         }
 
-        .summary-value.errors {
-            color: #ea4335;
-        }
-
-        .summary-value.warnings {
-            color: #fbbc04;
-        }
-
-        .summary-value.success {
-            color: #34a853;
-        }
+        .summary-value.errors { color: #ea4335; }
+        .summary-value.warnings { color: #fbbc04; }
+        .summary-value.success { color: #34a853; }
 
         .summary-label {
             color: #5f6368;
@@ -226,9 +218,7 @@
             flex: 1;
         }
 
-        .url-link:hover {
-            text-decoration: underline;
-        }
+        .url-link:hover { text-decoration: underline; }
 
         .url-actions {
             display: flex;
@@ -245,29 +235,10 @@
             white-space: nowrap;
         }
 
-        .status-badge.success {
-            background: #e6f4ea;
-            color: #137333;
-        }
-
-        .status-badge.warning {
-            background: #fef7e0;
-            color: #b06000;
-        }
-
-        .status-badge.error {
-            background: #fce8e6;
-            color: #c5221f;
-        }
-
-        .status-badge.no-data {
-            background: #f1f3f4;
-            color: #5f6368;
-        }
-
-        .url-body {
-            padding: 0;
-        }
+        .status-badge.success { background: #e6f4ea; color: #137333; }
+        .status-badge.warning { background: #fef7e0; color: #b06000; }
+        .status-badge.error { background: #fce8e6; color: #c5221f; }
+        .status-badge.no-data { background: #f1f3f4; color: #5f6368; }
 
         .detected-data-header {
             padding: 12px 20px;
@@ -278,25 +249,23 @@
             border-bottom: 1px solid #e8eaed;
         }
 
-        .schema-list {
-            list-style: none;
-        }
+        .schema-list { list-style: none; }
 
         .schema-item {
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .schema-item:last-child { border-bottom: none; }
+
+        .schema-item-header {
             display: flex;
             align-items: center;
             padding: 14px 20px;
-            border-bottom: 1px solid #e8eaed;
+            cursor: pointer;
             transition: background 0.2s;
         }
 
-        .schema-item:last-child {
-            border-bottom: none;
-        }
-
-        .schema-item:hover {
-            background: #f8f9fa;
-        }
+        .schema-item-header:hover { background: #f8f9fa; }
 
         .schema-icon {
             width: 24px;
@@ -309,79 +278,110 @@
             flex-shrink: 0;
         }
 
-        .schema-icon.valid {
-            background: #e6f4ea;
-            color: #34a853;
-        }
+        .schema-icon.valid { background: #e6f4ea; color: #34a853; }
+        .schema-icon.warning { background: #fef7e0; color: #ea8600; }
+        .schema-icon.error { background: #fce8e6; color: #ea4335; }
+        .schema-icon svg { width: 14px; height: 14px; }
 
-        .schema-icon.warning {
-            background: #fef7e0;
-            color: #ea8600;
-        }
-
-        .schema-icon.error {
-            background: #fce8e6;
-            color: #ea4335;
-        }
-
-        .schema-icon svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .schema-info {
-            flex: 1;
-        }
-
-        .schema-name {
-            color: #202124;
-            font-size: 14px;
-            margin-bottom: 2px;
-        }
-
-        .schema-count {
-            color: #5f6368;
-            font-size: 12px;
-        }
+        .schema-info { flex: 1; }
+        .schema-name { color: #202124; font-size: 14px; }
+        .schema-count { color: #5f6368; font-size: 12px; margin-left: auto; padding-right: 12px; }
 
         .schema-arrow {
             color: #9aa0a6;
-            margin-left: 12px;
+            transition: transform 0.2s;
         }
 
-        .issues-section {
+        .schema-arrow.expanded { transform: rotate(90deg); }
+
+        .schema-details {
+            display: none;
+            background: #f8f9fa;
+            border-top: 1px solid #e8eaed;
+        }
+
+        .schema-details.expanded { display: block; }
+
+        .detected-items-header {
             padding: 12px 20px;
-            background: #fef7e0;
-            border-top: 1px solid #fde293;
+            color: #5f6368;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .issues-section.error-section {
-            background: #fce8e6;
-            border-top-color: #f5c6c2;
+        .schema-item-detail {
+            background: white;
+            margin: 0 12px 12px;
+            border-radius: 4px;
+            border: 1px solid #e8eaed;
         }
 
-        .issue-item {
+        .schema-item-detail-header {
             display: flex;
-            align-items: flex-start;
-            padding: 8px 0;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .schema-item-detail-header:hover { background: #f8f9fa; }
+
+        .detail-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e6f4ea;
+            color: #34a853;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+
+        .detail-icon svg { width: 12px; height: 12px; }
+
+        .detail-name { color: #202124; font-size: 13px; flex: 1; }
+
+        .detail-arrow {
+            color: #9aa0a6;
+            transition: transform 0.2s;
+        }
+
+        .detail-arrow.expanded { transform: rotate(180deg); }
+
+        .schema-properties {
+            display: none;
+            padding: 0;
+        }
+
+        .schema-properties.expanded { display: block; }
+
+        .property-row {
+            display: flex;
+            padding: 10px 16px;
+            border-bottom: 1px solid #f1f3f4;
             font-size: 13px;
         }
 
-        .issue-icon {
-            margin-right: 10px;
-            flex-shrink: 0;
+        .property-row:last-child { border-bottom: none; }
+
+        .property-key {
+            color: #1a73e8;
+            min-width: 150px;
+            padding-right: 16px;
         }
 
-        .issue-icon.error {
-            color: #ea4335;
-        }
-
-        .issue-icon.warning {
-            color: #ea8600;
-        }
-
-        .issue-text {
+        .property-value {
             color: #202124;
+            word-break: break-all;
+            flex: 1;
+        }
+
+        .property-nested {
+            padding-left: 20px;
+            border-left: 2px solid #e8eaed;
+            margin-left: 16px;
         }
 
         .no-data-message {
@@ -419,9 +419,7 @@
             vertical-align: middle;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .error-message {
             background: #fce8e6;
@@ -433,9 +431,7 @@
             border-left: 4px solid #ea4335;
         }
 
-        .error-message.active {
-            display: block;
-        }
+        .error-message.active { display: block; }
 
         .google-test-link {
             display: inline-flex;
@@ -447,14 +443,8 @@
             font-weight: 500;
         }
 
-        .google-test-link:hover {
-            text-decoration: underline;
-        }
-
-        .google-test-link svg {
-            width: 14px;
-            height: 14px;
-        }
+        .google-test-link:hover { text-decoration: underline; }
+        .google-test-link svg { width: 14px; height: 14px; }
     </style>
 </head>
 <body>
@@ -490,20 +480,17 @@
         let isAnalyzing = false;
         let allResults = [];
 
-        // Schema type to category mapping (like Google Rich Results)
-        const schemaCategories = {
+        // Only these are the MAIN rich result types Google shows
+        const richResultTypes = {
             // Articles
             'Article': 'Articles',
             'NewsArticle': 'Articles',
             'BlogPosting': 'Articles',
-            'TechArticle': 'Articles',
-            'ScholarlyArticle': 'Articles',
-            'Report': 'Articles',
             
             // Breadcrumbs
             'BreadcrumbList': 'Breadcrumbs',
             
-            // Local Business
+            // Local Business (all subtypes)
             'LocalBusiness': 'Local businesses',
             'Restaurant': 'Local businesses',
             'Dentist': 'Local businesses',
@@ -516,81 +503,76 @@
             'MedicalClinic': 'Local businesses',
             'Physician': 'Local businesses',
             'Hospital': 'Local businesses',
+            'AutoDealer': 'Local businesses',
+            'AutoRepair': 'Local businesses',
+            'Bakery': 'Local businesses',
+            'BarOrPub': 'Local businesses',
+            'BeautySalon': 'Local businesses',
+            'CafeOrCoffeeShop': 'Local businesses',
+            'DaySpa': 'Local businesses',
+            'Florist': 'Local businesses',
+            'HairSalon': 'Local businesses',
+            'IceCreamShop': 'Local businesses',
+            'NailSalon': 'Local businesses',
+            'TattooParlor': 'Local businesses',
             
             // Organization
             'Organization': 'Organization',
-            'Corporation': 'Organization',
-            'GovernmentOrganization': 'Organization',
-            'NGO': 'Organization',
-            'EducationalOrganization': 'Organization',
             
             // Videos
             'VideoObject': 'Videos',
-            'Movie': 'Videos',
-            'TVSeries': 'Videos',
-            'TVEpisode': 'Videos',
             
             // Products
             'Product': 'Products',
-            'ProductGroup': 'Products',
-            'IndividualProduct': 'Products',
-            
-            // Reviews
-            'Review': 'Reviews',
-            'AggregateRating': 'Reviews',
-            
-            // Events
-            'Event': 'Events',
-            'BusinessEvent': 'Events',
-            'MusicEvent': 'Events',
-            'SportsEvent': 'Events',
             
             // FAQ
             'FAQPage': 'FAQs',
-            'Question': 'FAQs',
             
             // How-to
             'HowTo': 'How-to',
-            'HowToStep': 'How-to',
             
-            // Recipes
+            // Recipe
             'Recipe': 'Recipes',
             
-            // Jobs
+            // Events
+            'Event': 'Events',
+            
+            // Job Posting
             'JobPosting': 'Job postings',
             
-            // Courses
+            // Course
             'Course': 'Courses',
             
-            // Books
-            'Book': 'Books',
+            // Review/Rating
+            'Review': 'Reviews',
             
-            // Software
+            // Software App
             'SoftwareApplication': 'Software apps',
             'MobileApplication': 'Software apps',
             'WebApplication': 'Software apps',
             
-            // Person
-            'Person': 'Person',
+            // Book
+            'Book': 'Books',
             
-            // WebSite
-            'WebSite': 'Sitelinks searchbox',
-            'WebPage': 'Web pages',
-            
-            // Images
-            'ImageObject': 'Images',
-            'ImageGallery': 'Images'
+            // Dataset
+            'Dataset': 'Datasets'
         };
 
+        function isRichResultType(type) {
+            return richResultTypes.hasOwnProperty(type);
+        }
+
         function getCategoryForType(type) {
-            if (Array.isArray(type)) {
-                type = type[0];
-            }
-            return schemaCategories[type] || type;
+            if (Array.isArray(type)) type = type[0];
+            return richResultTypes[type] || null;
         }
 
         function getGoogleRichResultsUrl(url) {
             return `https://search.google.com/test/rich-results?url=${encodeURIComponent(url)}`;
+        }
+
+        function getItemName(data) {
+            return data.name || data.headline || data['@id'] || 'Item';
         }
 
         async function analyzeSitemap() {
@@ -639,9 +621,7 @@
                 showStatus('Analysis complete!');
                 displayResults(allResults);
 
-                setTimeout(() => {
-                    hideStatus();
-                }, 1500);
+                setTimeout(() => hideStatus(), 1500);
 
             } catch (error) {
                 console.error('Error:', error);
@@ -688,9 +668,7 @@
             }
 
             const urlElements = xmlDoc.querySelectorAll('url > loc');
-            const urls = Array.from(urlElements).map(el => el.textContent.trim());
-
-            return urls;
+            return Array.from(urlElements).map(el => el.textContent.trim());
         }
 
         async function analyzeUrl(url) {
@@ -699,264 +677,175 @@
                 const response = await fetch(proxyUrl);
                 
                 if (!response.ok) {
-                    return {
-                        url,
-                        status: 'error',
-                        error: `Failed to fetch`,
-                        schemas: [],
-                        categories: {},
-                        issues: []
-                    };
+                    return { url, status: 'error', error: 'Failed to fetch', categories: {} };
                 }
 
                 const html = await response.text();
-                const structuredData = extractStructuredData(html);
+                const categories = extractRichResults(html);
                 
-                const categories = {};
-                structuredData.schemas.forEach(schema => {
-                    const category = getCategoryForType(schema.type);
-                    if (!categories[category]) {
-                        categories[category] = { count: 0, items: [], hasErrors: false, hasWarnings: false };
-                    }
-                    categories[category].count++;
-                    categories[category].items.push(schema);
-                });
-
-                structuredData.issues.forEach(issue => {
-                    const category = getCategoryForType(issue.schemaType);
-                    if (categories[category]) {
-                        if (issue.severity === 'error') {
-                            categories[category].hasErrors = true;
-                        } else if (issue.severity === 'warning') {
-                            categories[category].hasWarnings = true;
-                        }
-                    }
-                });
-
+                const hasData = Object.keys(categories).length > 0;
+                
                 return {
                     url,
-                    status: structuredData.schemas.length > 0 ? 'success' : 'no-data',
-                    schemas: structuredData.schemas,
-                    categories,
-                    issues: structuredData.issues
+                    status: hasData ? 'success' : 'no-data',
+                    categories
                 };
 
             } catch (error) {
-                return {
-                    url,
-                    status: 'error',
-                    error: 'Failed to fetch',
-                    schemas: [],
-                    categories: {},
-                    issues: []
-                };
+                return { url, status: 'error', error: 'Failed to fetch', categories: {} };
             }
         }
 
-        function extractStructuredData(html) {
+        function extractRichResults(html) {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
-            const schemas = [];
-            const issues = [];
+            const categories = {};
 
             const jsonLdScripts = doc.querySelectorAll('script[type="application/ld+json"]');
-            jsonLdScripts.forEach((script, index) => {
+            jsonLdScripts.forEach((script) => {
                 try {
                     let data = JSON.parse(script.textContent);
                     
                     if (data['@graph']) {
-                        data = data['@graph'];
+                        data['@graph'].forEach(item => processItem(item, categories));
+                    } else if (Array.isArray(data)) {
+                        data.forEach(item => processItem(item, categories));
+                    } else {
+                        processItem(data, categories);
                     }
-                    
-                    const items = Array.isArray(data) ? data : [data];
-                    
-                    items.forEach(item => {
-                        processSchemaItem(item, schemas, issues, 'JSON-LD');
-                    });
                 } catch (e) {
-                    issues.push({
-                        severity: 'error',
-                        type: 'Parse Error',
-                        schemaType: 'Unknown',
-                        message: `Invalid JSON-LD in script tag ${index + 1}: ${e.message}`
-                    });
+                    // Skip invalid JSON
                 }
             });
 
-            const itemScopes = doc.querySelectorAll('[itemscope]');
-            itemScopes.forEach(element => {
-                const itemType = element.getAttribute('itemtype');
-                if (itemType) {
-                    const typeName = itemType.split('/').pop();
-                    schemas.push({
-                        type: typeName,
-                        format: 'Microdata',
-                        data: { itemType }
-                    });
-                }
-            });
-
-            return { schemas, issues };
+            return categories;
         }
 
-        function processSchemaItem(item, schemas, issues, format) {
-            if (!item || typeof item !== 'object') return;
+        function processItem(item, categories) {
+            if (!item || !item['@type']) return;
             
-            if (item['@type']) {
-                const types = Array.isArray(item['@type']) ? item['@type'] : [item['@type']];
-                
-                types.forEach(type => {
-                    schemas.push({
+            const types = Array.isArray(item['@type']) ? item['@type'] : [item['@type']];
+            
+            types.forEach(type => {
+                const category = getCategoryForType(type);
+                if (category) {
+                    if (!categories[category]) {
+                        categories[category] = { items: [] };
+                    }
+                    categories[category].items.push({
                         type: type,
-                        format: format,
+                        name: getItemName(item),
                         data: item
                     });
-
-                    validateSchema(item, type, issues);
-                });
-            }
-
-            Object.values(item).forEach(value => {
-                if (Array.isArray(value)) {
-                    value.forEach(v => processSchemaItem(v, schemas, issues, format));
-                } else if (typeof value === 'object' && value !== null) {
-                    processSchemaItem(value, schemas, issues, format);
                 }
             });
         }
 
-        function validateSchema(schema, type, issues) {
-            if (['LocalBusiness', 'Dentist', 'Restaurant', 'MedicalBusiness', 'ProfessionalService', 'MedicalClinic', 'Physician'].includes(type)) {
-                if (!schema.name) {
-                    issues.push({
-                        severity: 'error',
-                        schemaType: type,
-                        type: 'Missing Required Property',
-                        message: `Missing required "name" property`
-                    });
-                }
-                if (!schema.address) {
-                    issues.push({
-                        severity: 'warning',
-                        schemaType: type,
-                        type: 'Recommended Property Missing',
-                        message: `Missing recommended "address" property`
-                    });
-                }
+        function renderSchemaData(data, depth = 0) {
+            if (data === null || data === undefined) return '';
+            
+            if (typeof data !== 'object') {
+                return `<span class="property-value">${escapeHtml(String(data))}</span>`;
             }
 
-            if (type === 'Organization') {
-                if (!schema.name) {
-                    issues.push({
-                        severity: 'error',
-                        schemaType: type,
-                        type: 'Missing Required Property',
-                        message: `Missing required "name" property`
-                    });
-                }
-                if (!schema.url && !schema.sameAs) {
-                    issues.push({
-                        severity: 'warning',
-                        schemaType: type,
-                        type: 'Recommended Property Missing',
-                        message: `Missing recommended "url" or "sameAs" property`
-                    });
-                }
+            if (Array.isArray(data)) {
+                if (data.length === 0) return '<span class="property-value">[]</span>';
+                return data.map((item, i) => `
+                    <div class="property-nested">
+                        <div class="property-row">
+                            <span class="property-key">[${i}]</span>
+                            ${renderSchemaData(item, depth + 1)}
+                        </div>
+                    </div>
+                `).join('');
             }
 
-            if (['Article', 'NewsArticle', 'BlogPosting'].includes(type)) {
-                if (!schema.headline) {
-                    issues.push({
-                        severity: 'warning',
-                        schemaType: type,
-                        type: 'Recommended Property Missing',
-                        message: `Missing recommended "headline" property`
-                    });
+            const entries = Object.entries(data).filter(([key]) => !key.startsWith('@') || key === '@type' || key === '@id');
+            
+            return entries.map(([key, value]) => {
+                if (typeof value === 'object' && value !== null) {
+                    return `
+                        <div class="property-row">
+                            <span class="property-key">${escapeHtml(key)}</span>
+                            <span class="property-value"></span>
+                        </div>
+                        <div class="property-nested">
+                            ${typeof value === 'object' ? renderObjectProperties(value) : escapeHtml(String(value))}
+                        </div>
+                    `;
                 }
-                if (!schema.author) {
-                    issues.push({
-                        severity: 'warning',
-                        schemaType: type,
-                        type: 'Recommended Property Missing',
-                        message: `Missing recommended "author" property`
-                    });
-                }
-                if (!schema.datePublished) {
-                    issues.push({
-                        severity: 'warning',
-                        schemaType: type,
-                        type: 'Recommended Property Missing',
-                        message: `Missing recommended "datePublished" property`
-                    });
-                }
-            }
+                return `
+                    <div class="property-row">
+                        <span class="property-key">${escapeHtml(key)}</span>
+                        <span class="property-value">${escapeHtml(String(value))}</span>
+                    </div>
+                `;
+            }).join('');
+        }
 
-            if (type === 'VideoObject') {
-                if (!schema.name) {
-                    issues.push({
-                        severity: 'error',
-                        schemaType: type,
-                        type: 'Missing Required Property',
-                        message: `Missing required "name" property`
-                    });
-                }
-                if (!schema.thumbnailUrl) {
-                    issues.push({
-                        severity: 'warning',
-                        schemaType: type,
-                        type: 'Recommended Property Missing',
-                        message: `Missing recommended "thumbnailUrl" property`
-                    });
-                }
+        function renderObjectProperties(obj) {
+            if (Array.isArray(obj)) {
+                return obj.map((item, i) => `
+                    <div class="property-row">
+                        <span class="property-key">[${i}]</span>
+                        ${typeof item === 'object' ? '' : `<span class="property-value">${escapeHtml(String(item))}</span>`}
+                    </div>
+                    ${typeof item === 'object' ? `<div class="property-nested">${renderObjectProperties(item)}</div>` : ''}
+                `).join('');
             }
-
-            if (type === 'BreadcrumbList') {
-                if (!schema.itemListElement || schema.itemListElement.length === 0) {
-                    issues.push({
-                        severity: 'error',
-                        schemaType: type,
-                        type: 'Missing Required Property',
-                        message: `Missing required "itemListElement" property`
-                    });
+            
+            return Object.entries(obj).map(([key, value]) => {
+                if (typeof value === 'object' && value !== null) {
+                    return `
+                        <div class="property-row">
+                            <span class="property-key">${escapeHtml(key)}</span>
+                            ${value['@type'] ? `<span class="property-value">${escapeHtml(value['@type'])}</span>` : ''}
+                        </div>
+                        <div class="property-nested">${renderObjectProperties(value)}</div>
+                    `;
                 }
+                return `
+                    <div class="property-row">
+                        <span class="property-key">${escapeHtml(key)}</span>
+                        <span class="property-value">${escapeHtml(String(value))}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function toggleCategory(cardIndex, category) {
+            const details = document.querySelector(`[data-card="${cardIndex}"][data-category="${category}"]`);
+            const arrow = document.querySelector(`[data-arrow-card="${cardIndex}"][data-arrow-category="${category}"]`);
+            
+            if (details) {
+                details.classList.toggle('expanded');
+                arrow.classList.toggle('expanded');
             }
+        }
 
-            if (type === 'Product') {
-                if (!schema.name) {
-                    issues.push({
-                        severity: 'error',
-                        schemaType: type,
-                        type: 'Missing Required Property',
-                        message: `Missing required "name" property`
-                    });
-                }
-                if (!schema.image) {
-                    issues.push({
-                        severity: 'warning',
-                        schemaType: type,
-                        type: 'Recommended Property Missing',
-                        message: `Missing recommended "image" property`
-                    });
-                }
+        function toggleItem(cardIndex, category, itemIndex) {
+            const props = document.querySelector(`[data-props-card="${cardIndex}"][data-props-category="${category}"][data-props-item="${itemIndex}"]`);
+            const arrow = document.querySelector(`[data-item-arrow-card="${cardIndex}"][data-item-arrow-category="${category}"][data-item-arrow-item="${itemIndex}"]`);
+            
+            if (props) {
+                props.classList.toggle('expanded');
+                arrow.classList.toggle('expanded');
             }
         }
 
         function createUrlCard(result, index) {
-            const hasErrors = result.status === 'error' || result.issues.some(i => i.severity === 'error');
-            const hasWarnings = result.issues.some(i => i.severity === 'warning');
-            
-            const statusClass = result.status === 'error' ? 'error' : 
-                               hasErrors ? 'error' :
-                               hasWarnings ? 'warning' :
-                               result.schemas.length > 0 ? 'success' : 'no-data';
-
-            const statusText = result.status === 'error' ? 'Error' :
-                              hasErrors ? 'Errors' :
-                              hasWarnings ? 'Warnings' :
-                              result.schemas.length > 0 ? 'Valid' : 'No data';
-
-            const googleTestUrl = getGoogleRichResultsUrl(result.url);
             const categories = Object.entries(result.categories || {});
+            const hasData = categories.length > 0;
+            
+            const statusClass = result.status === 'error' ? 'error' : hasData ? 'success' : 'no-data';
+            const statusText = result.status === 'error' ? 'Error' : hasData ? 'Valid' : 'No data';
+            const googleTestUrl = getGoogleRichResultsUrl(result.url);
 
             let cardHtml = `
                 <div class="url-card" data-index="${index}">
@@ -970,9 +859,7 @@
                                 Rich Results Test
                             </a>
                             ${result.status === 'error' ? `
-                                <button class="btn-retest" onclick="retestUrl(${index})" title="Re-test this URL">
-                                    ↻ Re-test
-                                </button>
+                                <button class="btn-retest" onclick="retestUrl(${index})" title="Re-test this URL">↻ Re-test</button>
                             ` : ''}
                             <span class="status-badge ${statusClass}">${statusText}</span>
                         </div>
@@ -986,72 +873,56 @@
                             ${result.error}
                         </span>
                     </div>`;
-            } else if (categories.length > 0) {
+            } else if (hasData) {
                 cardHtml += `
-                    <div class="url-body">
-                        <div class="detected-data-header">Detected structured data</div>
-                        <ul class="schema-list">`;
+                    <div class="detected-data-header">Detected structured data</div>
+                    <ul class="schema-list">`;
 
                 categories.forEach(([category, data]) => {
-                    const iconClass = data.hasErrors ? 'error' : data.hasWarnings ? 'warning' : 'valid';
-                    const iconSvg = data.hasErrors ? 
-                        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>' :
-                        data.hasWarnings ?
-                        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>' :
-                        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-
+                    const safeCategory = category.replace(/[^a-zA-Z0-9]/g, '_');
                     cardHtml += `
                         <li class="schema-item">
-                            <div class="schema-icon ${iconClass}">${iconSvg}</div>
-                            <div class="schema-info">
-                                <div class="schema-name">${category}</div>
-                                <div class="schema-count">${data.count} valid item${data.count !== 1 ? 's' : ''} detected</div>
+                            <div class="schema-item-header" onclick="toggleCategory(${index}, '${safeCategory}')">
+                                <div class="schema-icon valid">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                </div>
+                                <div class="schema-info">
+                                    <div class="schema-name">${category}</div>
+                                </div>
+                                <div class="schema-count">${data.items.length} valid item${data.items.length !== 1 ? 's' : ''} detected</div>
+                                <div class="schema-arrow" data-arrow-card="${index}" data-arrow-category="${safeCategory}">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                                </div>
                             </div>
-                            <div class="schema-arrow">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                            <div class="schema-details" data-card="${index}" data-category="${safeCategory}">
+                                <div class="detected-items-header">Detected items</div>
+                                ${data.items.map((item, itemIdx) => `
+                                    <div class="schema-item-detail">
+                                        <div class="schema-item-detail-header" onclick="toggleItem(${index}, '${safeCategory}', ${itemIdx})">
+                                            <div class="detail-icon">
+                                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                            </div>
+                                            <div class="detail-name">${escapeHtml(item.name)}</div>
+                                            <div class="detail-arrow" data-item-arrow-card="${index}" data-item-arrow-category="${safeCategory}" data-item-arrow-item="${itemIdx}">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                                            </div>
+                                        </div>
+                                        <div class="schema-properties" data-props-card="${index}" data-props-category="${safeCategory}" data-props-item="${itemIdx}">
+                                            <div class="property-row">
+                                                <span class="property-key">type</span>
+                                                <span class="property-value">${escapeHtml(item.type)}</span>
+                                            </div>
+                                            ${renderObjectProperties(item.data)}
+                                        </div>
+                                    </div>
+                                `).join('')}
                             </div>
                         </li>`;
                 });
 
                 cardHtml += `</ul>`;
-
-                const errors = result.issues.filter(i => i.severity === 'error');
-                const warnings = result.issues.filter(i => i.severity === 'warning');
-
-                if (errors.length > 0) {
-                    cardHtml += `
-                        <div class="issues-section error-section">
-                            ${errors.map(issue => `
-                                <div class="issue-item">
-                                    <span class="issue-icon error">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                                    </span>
-                                    <span class="issue-text">${issue.message}</span>
-                                </div>
-                            `).join('')}
-                        </div>`;
-                }
-
-                if (warnings.length > 0) {
-                    cardHtml += `
-                        <div class="issues-section">
-                            ${warnings.map(issue => `
-                                <div class="issue-item">
-                                    <span class="issue-icon warning">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-                                    </span>
-                                    <span class="issue-text">${issue.message}</span>
-                                </div>
-                            `).join('')}
-                        </div>`;
-                }
-
-                cardHtml += `</div>`;
             } else {
-                cardHtml += `
-                    <div class="no-data-message">
-                        No structured data detected on this page
-                    </div>`;
+                cardHtml += `<div class="no-data-message">No structured data detected on this page</div>`;
             }
 
             cardHtml += `</div>`;
@@ -1062,13 +933,8 @@
             const summaryEl = document.getElementById('summary');
             
             const totalUrls = allResults.length;
-            const withData = allResults.filter(r => r.schemas.length > 0).length;
-            const withErrors = allResults.filter(r => 
-                r.status === 'error' || r.issues.some(i => i.severity === 'error')
-            ).length;
-            const withWarnings = allResults.filter(r => 
-                r.issues.some(i => i.severity === 'warning')
-            ).length;
+            const withData = allResults.filter(r => Object.keys(r.categories || {}).length > 0).length;
+            const withErrors = allResults.filter(r => r.status === 'error').length;
 
             summaryEl.innerHTML = `
                 <div class="summary-item">
@@ -1077,26 +943,22 @@
                 </div>
                 <div class="summary-item">
                     <div class="summary-value success">${withData}</div>
-                    <div class="summary-label">With Data</div>
+                    <div class="summary-label">With Rich Results</div>
                 </div>
                 <div class="summary-item">
                     <div class="summary-value errors">${withErrors}</div>
                     <div class="summary-label">Errors</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-value warnings">${withWarnings}</div>
-                    <div class="summary-label">Warnings</div>
+                    <div class="summary-value">${totalUrls - withData - withErrors}</div>
+                    <div class="summary-label">No Data</div>
                 </div>
             `;
         }
 
         function displayResults(results) {
-            const urlCardsEl = document.getElementById('urlCards');
-
             updateSummary();
-
-            urlCardsEl.innerHTML = results.map((result, index) => createUrlCard(result, index)).join('');
-
+            document.getElementById('urlCards').innerHTML = results.map((result, index) => createUrlCard(result, index)).join('');
             showResults();
         }
 
@@ -1149,9 +1011,7 @@
         }
 
         document.getElementById('sitemapUrl').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                analyzeSitemap();
-            }
+            if (e.key === 'Enter') analyzeSitemap();
         });
     </script>
 </body>
