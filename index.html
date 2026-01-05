@@ -582,7 +582,9 @@
                 <div class="button-group">
                     <button class="btn-success" onclick="copyReportLink()">📋 Copy Link</button>
                     <button class="btn-primary" onclick="openReportLink()">🔗 Open Report</button>
+                    <button class="btn-secondary" onclick="shortenUrl()">✂️ Shorten URL</button>
                 </div>
+                <p id="shortenedUrlResult" style="margin-top: 10px; color: #155724; font-weight: 600;"></p>
             </div>
         </div>
     </div>
@@ -1132,6 +1134,48 @@
         
         function openReportLink() {
             window.open(document.getElementById('reportLinkInput').value, '_blank');
+        }
+        
+        async function shortenUrl() {
+            const longUrl = document.getElementById('reportLinkInput').value;
+            const resultElement = document.getElementById('shortenedUrlResult');
+            
+            if (!longUrl) {
+                alert('No URL to shorten!');
+                return;
+            }
+            
+            resultElement.textContent = 'Shortening URL...';
+            resultElement.style.color = '#666';
+            
+            try {
+                const res = await fetch("https://urllink.site/api/url.php", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ url: longUrl })
+                });
+                
+                const data = await res.json();
+                
+                if (data.short_url) {
+                    resultElement.innerHTML = `Shortened URL: <a href="${data.short_url}" target="_blank" style="color: #667eea; text-decoration: underline;">${data.short_url}</a>`;
+                    resultElement.style.color = '#155724';
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(data.short_url).then(() => {
+                        setTimeout(() => {
+                            resultElement.innerHTML += ' <span style="color: #28a745;">(Copied to clipboard!)</span>';
+                        }, 100);
+                    });
+                } else {
+                    resultElement.textContent = 'Failed to shorten URL. Please try again.';
+                    resultElement.style.color = '#dc3545';
+                }
+            } catch (error) {
+                console.error('Error shortening URL:', error);
+                resultElement.textContent = 'Error shortening URL. Please try again.';
+                resultElement.style.color = '#dc3545';
+            }
         }
     </script>
 </body>
