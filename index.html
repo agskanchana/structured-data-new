@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Structured Data Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Google Sans', Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f1f3f4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #202124;
+            margin-bottom: 8px;
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            color: #5f6368;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+        }
+
+        .btn-primary {
+            padding: 12px 24px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #1557b0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-retest {
+            padding: 6px 12px;
+            background: #ea4335;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-retest:hover {
+            background: #c5221f;
+        }
+
+        .btn-retest:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .status {
+            background: #e8f0fe;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+            display: none;
+            border-left: 4px solid #1a73e8;
+        }
+
+        .status.active {
+            display: block;
+        }
+
+        .status-text {
+            color: #174ea6;
+            font-size: 13px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #c2d7f4;
+            border-radius: 2px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #1a73e8;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .summary {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .summary-value {
+            font-size: 36px;
+            font-weight: 400;
+            color: #1a73e8;
+            margin-bottom: 4px;
+        }
+
+        .summary-value.errors {
+            color: #ea4335;
+        }
+
+        .summary-value.warnings {
+            color: #fbbc04;
+        }
+
+        .summary-value.success {
+            color: #34a853;
+        }
+
+        .summary-label {
+            color: #5f6368;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .url-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .url-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e8eaed;
+            gap: 12px;
+        }
+
+        .url-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .url-link {
+            color: #1a0dab;
+            text-decoration: none;
+            font-size: 14px;
+            word-break: break-all;
+            flex: 1;
+        }
+
+        .url-link:hover {
+            text-decoration: underline;
+        }
+
+        .url-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-badge.success {
+            background: #e6f4ea;
+            color: #137333;
+        }
+
+        .status-badge.warning {
+            background: #fef7e0;
+            color: #b06000;
+        }
+
+        .status-badge.error {
+            background: #fce8e6;
+            color: #c5221f;
+        }
+
+        .status-badge.no-data {
+            background: #f1f3f4;
+            color: #5f6368;
+        }
+
+        .url-body {
+            padding: 0;
+        }
+
+        .detected-data-header {
+            padding: 12px 20px;
+            color: #5f6368;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .schema-list {
+            list-style: none;
+        }
+
+        .schema-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid #e8eaed;
+            transition: background 0.2s;
+        }
+
+        .schema-item:last-child {
+            border-bottom: none;
+        }
+
+        .schema-item:hover {
+            background: #f8f9fa;
+        }
+
+        .schema-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .schema-icon.valid {
+            background: #e6f4ea;
+            color: #34a853;
+        }
+
+        .schema-icon.warning {
+            background: #fef7e0;
+            color: #ea8600;
+        }
+
+        .schema-icon.error {
+            background: #fce8e6;
+            color: #ea4335;
+        }
+
+        .schema-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .schema-info {
+            flex: 1;
+        }
+
+        .schema-name {
+            color: #202124;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .schema-count {
+            color: #5f6368;
+            font-size: 12px;
+        }
+
+        .schema-arrow {
+            color: #9aa0a6;
+            margin-left: 12px;
+        }
+
+        .issues-section {
+            padding: 12px 20px;
+            background: #fef7e0;
+            border-top: 1px solid #fde293;
+        }
+
+        .issues-section.error-section {
+            background: #fce8e6;
+            border-top-color: #f5c6c2;
+        }
+
+        .issue-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 8px 0;
+            font-size: 13px;
+        }
+
+        .issue-icon {
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .issue-icon.error {
+            color: #ea4335;
+        }
+
+        .issue-icon.warning {
+            color: #ea8600;
+        }
+
+        .issue-text {
+            color: #202124;
+        }
+
+        .no-data-message {
+            padding: 20px;
+            text-align: center;
+            color: #5f6368;
+            font-size: 13px;
+        }
+
+        .error-content {
+            padding: 16px 20px;
+            background: #fce8e6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .error-text {
+            color: #c5221f;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fce8e6;
+            color: #c5221f;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+            display: none;
+            border-left: 4px solid #ea4335;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .google-test-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .google-test-link:hover {
+            text-decoration: underline;
+        }
+
+        .google-test-link svg {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Sitemap Structured Data Analyzer</h1>
+            <p class="subtitle">Enter a sitemap URL to analyze structured data across all pages (similar to Google Rich Results Test)</p>
+            
+            <div class="input-group">
+                <input type="text" id="sitemapUrl" placeholder="Enter sitemap URL (e.g., https://example.com/sitemap.xml)" value="https://www.queensdds.com/page-sitemap.xml">
+                <button class="btn-primary" id="analyzeBtn" onclick="analyzeSitemap()">
+                    <span id="btnText">Test Sitemap</span>
+                </button>
+            </div>
+
+            <div id="status" class="status">
+                <div class="status-text" id="statusText">Initializing...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+
+        <div id="results" class="results">
+            <div class="summary" id="summary"></div>
+            <div id="urlCards"></div>
+        </div>
+    </div>
+
+    <script>
+        let isAnalyzing = false;
+        let allResults = [];
+
+        // Schema type to category mapping (like Google Rich Results)
+        const schemaCategories = {
+            // Articles
+            'Article': 'Articles',
+            'NewsArticle': 'Articles',
+            'BlogPosting': 'Articles',
+            'TechArticle': 'Articles',
+            'ScholarlyArticle': 'Articles',
+            'Report': 'Articles',
+            
+            // Breadcrumbs
+            'BreadcrumbList': 'Breadcrumbs',
+            
+            // Local Business
+            'LocalBusiness': 'Local businesses',
+            'Restaurant': 'Local businesses',
+            'Dentist': 'Local businesses',
+            'MedicalBusiness': 'Local businesses',
+            'HealthAndBeautyBusiness': 'Local businesses',
+            'Store': 'Local businesses',
+            'FoodEstablishment': 'Local businesses',
+            'LodgingBusiness': 'Local businesses',
+            'ProfessionalService': 'Local businesses',
+            'MedicalClinic': 'Local businesses',
+            'Physician': 'Local businesses',
+            'Hospital': 'Local businesses',
+            
+            // Organization
+            'Organization': 'Organization',
+            'Corporation': 'Organization',
+            'GovernmentOrganization': 'Organization',
+            'NGO': 'Organization',
+            'EducationalOrganization': 'Organization',
+            
+            // Videos
+            'VideoObject': 'Videos',
+            'Movie': 'Videos',
+            'TVSeries': 'Videos',
+            'TVEpisode': 'Videos',
+            
+            // Products
+            'Product': 'Products',
+            'ProductGroup': 'Products',
+            'IndividualProduct': 'Products',
+            
+            // Reviews
+            'Review': 'Reviews',
+            'AggregateRating': 'Reviews',
+            
+            // Events
+            'Event': 'Events',
+            'BusinessEvent': 'Events',
+            'MusicEvent': 'Events',
+            'SportsEvent': 'Events',
+            
+            // FAQ
+            'FAQPage': 'FAQs',
+            'Question': 'FAQs',
+            
+            // How-to
+            'HowTo': 'How-to',
+            'HowToStep': 'How-to',
+            
+            // Recipes
+            'Recipe': 'Recipes',
+            
+            // Jobs
+            'JobPosting': 'Job postings',
+            
+            // Courses
+            'Course': 'Courses',
+            
+            // Books
+            'Book': 'Books',
+            
+            // Software
+            'SoftwareApplication': 'Software apps',
+            'MobileApplication': 'Software apps',
+            'WebApplication': 'Software apps',
+            
+            // Person
+            'Person': 'Person',
+            
+            // WebSite
+            'WebSite': 'Sitelinks searchbox',
+            'WebPage': 'Web pages',
+            
+            // Images
+            'ImageObject': 'Images',
+            'ImageGallery': 'Images'
+        };
+
+        function getCategoryForType(type) {
+            if (Array.isArray(type)) {
+                type = type[0];
+            }
+            return schemaCategories[type] || type;
+        }
+
+        function getGoogleRichResultsUrl(url) {
+            return `https://search.google.com/test/rich-results?url=${encodeURIComponent(url)}`;
+        }
+
+        async function analyzeSitemap() {
+            if (isAnalyzing) return;
+            
+            const sitemapUrl = document.getElementById('sitemapUrl').value.trim();
+            if (!sitemapUrl) {
+                showError('Please enter a sitemap URL');
+                return;
+            }
+
+            try {
+                new URL(sitemapUrl);
+            } catch (e) {
+                showError('Please enter a valid URL');
+                return;
+            }
+
+            isAnalyzing = true;
+            updateButton(true);
+            showStatus('Fetching sitemap...');
+            hideError();
+            hideResults();
+
+            try {
+                const urls = await fetchSitemap(sitemapUrl);
+                
+                if (urls.length === 0) {
+                    throw new Error('No URLs found in sitemap');
+                }
+
+                showStatus(`Found ${urls.length} URLs. Analyzing structured data...`);
+
+                allResults = [];
+                for (let i = 0; i < urls.length; i++) {
+                    updateProgress((i / urls.length) * 100);
+                    showStatus(`Analyzing ${i + 1} of ${urls.length}: ${urls[i]}`);
+                    
+                    const result = await analyzeUrl(urls[i]);
+                    allResults.push(result);
+                    
+                    await sleep(300);
+                }
+
+                updateProgress(100);
+                showStatus('Analysis complete!');
+                displayResults(allResults);
+
+                setTimeout(() => {
+                    hideStatus();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError(`Error: ${error.message}`);
+                hideStatus();
+            } finally {
+                isAnalyzing = false;
+                updateButton(false);
+            }
+        }
+
+        async function retestUrl(index) {
+            const url = allResults[index].url;
+            const card = document.querySelector(`[data-index="${index}"]`);
+            const retestBtn = card.querySelector('.btn-retest');
+            
+            retestBtn.disabled = true;
+            retestBtn.innerHTML = '<span class="loading-spinner"></span>';
+
+            const result = await analyzeUrl(url);
+            allResults[index] = result;
+            
+            const newCard = createUrlCard(result, index);
+            card.outerHTML = newCard;
+            
+            updateSummary();
+        }
+
+        async function fetchSitemap(url) {
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+            
+            const response = await fetch(proxyUrl);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch sitemap: ${response.statusText}`);
+            }
+
+            const text = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(text, 'text/xml');
+
+            const parserError = xmlDoc.querySelector('parsererror');
+            if (parserError) {
+                throw new Error('Invalid XML sitemap');
+            }
+
+            const urlElements = xmlDoc.querySelectorAll('url > loc');
+            const urls = Array.from(urlElements).map(el => el.textContent.trim());
+
+            return urls;
+        }
+
+        async function analyzeUrl(url) {
+            try {
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+                const response = await fetch(proxyUrl);
+                
+                if (!response.ok) {
+                    return {
+                        url,
+                        status: 'error',
+                        error: `Failed to fetch`,
+                        schemas: [],
+                        categories: {},
+                        issues: []
+                    };
+                }
+
+                const html = await response.text();
+                const structuredData = extractStructuredData(html);
+                
+                const categories = {};
+                structuredData.schemas.forEach(schema => {
+                    const category = getCategoryForType(schema.type);
+                    if (!categories[category]) {
+                        categories[category] = { count: 0, items: [], hasErrors: false, hasWarnings: false };
+                    }
+                    categories[category].count++;
+                    categories[category].items.push(schema);
+                });
+
+                structuredData.issues.forEach(issue => {
+                    const category = getCategoryForType(issue.schemaType);
+                    if (categories[category]) {
+                        if (issue.severity === 'error') {
+                            categories[category].hasErrors = true;
+                        } else if (issue.severity === 'warning') {
+                            categories[category].hasWarnings = true;
+                        }
+                    }
+                });
+
+                return {
+                    url,
+                    status: structuredData.schemas.length > 0 ? 'success' : 'no-data',
+                    schemas: structuredData.schemas,
+                    categories,
+                    issues: structuredData.issues
+                };
+
+            } catch (error) {
+                return {
+                    url,
+                    status: 'error',
+                    error: 'Failed to fetch',
+                    schemas: [],
+                    categories: {},
+                    issues: []
+                };
+            }
+        }
+
+        function extractStructuredData(html) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const schemas = [];
+            const issues = [];
+
+            const jsonLdScripts = doc.querySelectorAll('script[type="application/ld+json"]');
+            jsonLdScripts.forEach((script, index) => {
+                try {
+                    let data = JSON.parse(script.textContent);
+                    
+                    if (data['@graph']) {
+                        data = data['@graph'];
+                    }
+                    
+                    const items = Array.isArray(data) ? data : [data];
+                    
+                    items.forEach(item => {
+                        processSchemaItem(item, schemas, issues, 'JSON-LD');
+                    });
+                } catch (e) {
+                    issues.push({
+                        severity: 'error',
+                        type: 'Parse Error',
+                        schemaType: 'Unknown',
+                        message: `Invalid JSON-LD in script tag ${index + 1}: ${e.message}`
+                    });
+                }
+            });
+
+            const itemScopes = doc.querySelectorAll('[itemscope]');
+            itemScopes.forEach(element => {
+                const itemType = element.getAttribute('itemtype');
+                if (itemType) {
+                    const typeName = itemType.split('/').pop();
+                    schemas.push({
+                        type: typeName,
+                        format: 'Microdata',
+                        data: { itemType }
+                    });
+                }
+            });
+
+            return { schemas, issues };
+        }
+
+        function processSchemaItem(item, schemas, issues, format) {
+            if (!item || typeof item !== 'object') return;
+            
+            if (item['@type']) {
+                const types = Array.isArray(item['@type']) ? item['@type'] : [item['@type']];
+                
+                types.forEach(type => {
+                    schemas.push({
+                        type: type,
+                        format: format,
+                        data: item
+                    });
+
+                    validateSchema(item, type, issues);
+                });
+            }
+
+            Object.values(item).forEach(value => {
+                if (Array.isArray(value)) {
+                    value.forEach(v => processSchemaItem(v, schemas, issues, format));
+                } else if (typeof value === 'object' && value !== null) {
+                    processSchemaItem(value, schemas, issues, format);
+                }
+            });
+        }
+
+        function validateSchema(schema, type, issues) {
+            if (['LocalBusiness', 'Dentist', 'Restaurant', 'MedicalBusiness', 'ProfessionalService', 'MedicalClinic', 'Physician'].includes(type)) {
+                if (!schema.name) {
+                    issues.push({
+                        severity: 'error',
+                        schemaType: type,
+                        type: 'Missing Required Property',
+                        message: `Missing required "name" property`
+                    });
+                }
+                if (!schema.address) {
+                    issues.push({
+                        severity: 'warning',
+                        schemaType: type,
+                        type: 'Recommended Property Missing',
+                        message: `Missing recommended "address" property`
+                    });
+                }
+            }
+
+            if (type === 'Organization') {
+                if (!schema.name) {
+                    issues.push({
+                        severity: 'error',
+                        schemaType: type,
+                        type: 'Missing Required Property',
+                        message: `Missing required "name" property`
+                    });
+                }
+                if (!schema.url && !schema.sameAs) {
+                    issues.push({
+                        severity: 'warning',
+                        schemaType: type,
+                        type: 'Recommended Property Missing',
+                        message: `Missing recommended "url" or "sameAs" property`
+                    });
+                }
+            }
+
+            if (['Article', 'NewsArticle', 'BlogPosting'].includes(type)) {
+                if (!schema.headline) {
+                    issues.push({
+                        severity: 'warning',
+                        schemaType: type,
+                        type: 'Recommended Property Missing',
+                        message: `Missing recommended "headline" property`
+                    });
+                }
+                if (!schema.author) {
+                    issues.push({
+                        severity: 'warning',
+                        schemaType: type,
+                        type: 'Recommended Property Missing',
+                        message: `Missing recommended "author" property`
+                    });
+                }
+                if (!schema.datePublished) {
+                    issues.push({
+                        severity: 'warning',
+                        schemaType: type,
+                        type: 'Recommended Property Missing',
+                        message: `Missing recommended "datePublished" property`
+                    });
+                }
+            }
+
+            if (type === 'VideoObject') {
+                if (!schema.name) {
+                    issues.push({
+                        severity: 'error',
+                        schemaType: type,
+                        type: 'Missing Required Property',
+                        message: `Missing required "name" property`
+                    });
+                }
+                if (!schema.thumbnailUrl) {
+                    issues.push({
+                        severity: 'warning',
+                        schemaType: type,
+                        type: 'Recommended Property Missing',
+                        message: `Missing recommended "thumbnailUrl" property`
+                    });
+                }
+            }
+
+            if (type === 'BreadcrumbList') {
+                if (!schema.itemListElement || schema.itemListElement.length === 0) {
+                    issues.push({
+                        severity: 'error',
+                        schemaType: type,
+                        type: 'Missing Required Property',
+                        message: `Missing required "itemListElement" property`
+                    });
+                }
+            }
+
+            if (type === 'Product') {
+                if (!schema.name) {
+                    issues.push({
+                        severity: 'error',
+                        schemaType: type,
+                        type: 'Missing Required Property',
+                        message: `Missing required "name" property`
+                    });
+                }
+                if (!schema.image) {
+                    issues.push({
+                        severity: 'warning',
+                        schemaType: type,
+                        type: 'Recommended Property Missing',
+                        message: `Missing recommended "image" property`
+                    });
+                }
+            }
+        }
+
+        function createUrlCard(result, index) {
+            const hasErrors = result.status === 'error' || result.issues.some(i => i.severity === 'error');
+            const hasWarnings = result.issues.some(i => i.severity === 'warning');
+            
+            const statusClass = result.status === 'error' ? 'error' : 
+                               hasErrors ? 'error' :
+                               hasWarnings ? 'warning' :
+                               result.schemas.length > 0 ? 'success' : 'no-data';
+
+            const statusText = result.status === 'error' ? 'Error' :
+                              hasErrors ? 'Errors' :
+                              hasWarnings ? 'Warnings' :
+                              result.schemas.length > 0 ? 'Valid' : 'No data';
+
+            const googleTestUrl = getGoogleRichResultsUrl(result.url);
+            const categories = Object.entries(result.categories || {});
+
+            let cardHtml = `
+                <div class="url-card" data-index="${index}">
+                    <div class="url-header">
+                        <div class="url-left">
+                            <a href="${result.url}" target="_blank" class="url-link">${result.url}</a>
+                        </div>
+                        <div class="url-actions">
+                            <a href="${googleTestUrl}" target="_blank" class="google-test-link" title="Test in Google Rich Results">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                                Rich Results Test
+                            </a>
+                            ${result.status === 'error' ? `
+                                <button class="btn-retest" onclick="retestUrl(${index})" title="Re-test this URL">
+                                    ↻ Re-test
+                                </button>
+                            ` : ''}
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                    </div>`;
+
+            if (result.status === 'error') {
+                cardHtml += `
+                    <div class="error-content">
+                        <span class="error-text">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#ea4335"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                            ${result.error}
+                        </span>
+                    </div>`;
+            } else if (categories.length > 0) {
+                cardHtml += `
+                    <div class="url-body">
+                        <div class="detected-data-header">Detected structured data</div>
+                        <ul class="schema-list">`;
+
+                categories.forEach(([category, data]) => {
+                    const iconClass = data.hasErrors ? 'error' : data.hasWarnings ? 'warning' : 'valid';
+                    const iconSvg = data.hasErrors ? 
+                        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>' :
+                        data.hasWarnings ?
+                        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>' :
+                        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+
+                    cardHtml += `
+                        <li class="schema-item">
+                            <div class="schema-icon ${iconClass}">${iconSvg}</div>
+                            <div class="schema-info">
+                                <div class="schema-name">${category}</div>
+                                <div class="schema-count">${data.count} valid item${data.count !== 1 ? 's' : ''} detected</div>
+                            </div>
+                            <div class="schema-arrow">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                            </div>
+                        </li>`;
+                });
+
+                cardHtml += `</ul>`;
+
+                const errors = result.issues.filter(i => i.severity === 'error');
+                const warnings = result.issues.filter(i => i.severity === 'warning');
+
+                if (errors.length > 0) {
+                    cardHtml += `
+                        <div class="issues-section error-section">
+                            ${errors.map(issue => `
+                                <div class="issue-item">
+                                    <span class="issue-icon error">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                                    </span>
+                                    <span class="issue-text">${issue.message}</span>
+                                </div>
+                            `).join('')}
+                        </div>`;
+                }
+
+                if (warnings.length > 0) {
+                    cardHtml += `
+                        <div class="issues-section">
+                            ${warnings.map(issue => `
+                                <div class="issue-item">
+                                    <span class="issue-icon warning">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+                                    </span>
+                                    <span class="issue-text">${issue.message}</span>
+                                </div>
+                            `).join('')}
+                        </div>`;
+                }
+
+                cardHtml += `</div>`;
+            } else {
+                cardHtml += `
+                    <div class="no-data-message">
+                        No structured data detected on this page
+                    </div>`;
+            }
+
+            cardHtml += `</div>`;
+            return cardHtml;
+        }
+
+        function updateSummary() {
+            const summaryEl = document.getElementById('summary');
+            
+            const totalUrls = allResults.length;
+            const withData = allResults.filter(r => r.schemas.length > 0).length;
+            const withErrors = allResults.filter(r => 
+                r.status === 'error' || r.issues.some(i => i.severity === 'error')
+            ).length;
+            const withWarnings = allResults.filter(r => 
+                r.issues.some(i => i.severity === 'warning')
+            ).length;
+
+            summaryEl.innerHTML = `
+                <div class="summary-item">
+                    <div class="summary-value">${totalUrls}</div>
+                    <div class="summary-label">Total URLs</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value success">${withData}</div>
+                    <div class="summary-label">With Data</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value errors">${withErrors}</div>
+                    <div class="summary-label">Errors</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value warnings">${withWarnings}</div>
+                    <div class="summary-label">Warnings</div>
+                </div>
+            `;
+        }
+
+        function displayResults(results) {
+            const urlCardsEl = document.getElementById('urlCards');
+
+            updateSummary();
+
+            urlCardsEl.innerHTML = results.map((result, index) => createUrlCard(result, index)).join('');
+
+            showResults();
+        }
+
+        function showStatus(text) {
+            document.getElementById('status').classList.add('active');
+            document.getElementById('statusText').textContent = text;
+        }
+
+        function hideStatus() {
+            document.getElementById('status').classList.remove('active');
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.classList.add('active');
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').classList.remove('active');
+        }
+
+        function showResults() {
+            document.getElementById('results').classList.add('active');
+        }
+
+        function hideResults() {
+            document.getElementById('results').classList.remove('active');
+        }
+
+        function updateProgress(percent) {
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        function updateButton(loading) {
+            const btn = document.getElementById('analyzeBtn');
+            const btnText = document.getElementById('btnText');
+            
+            if (loading) {
+                btn.disabled = true;
+                btnText.innerHTML = '<span class="loading-spinner"></span>Testing...';
+            } else {
+                btn.disabled = false;
+                btnText.textContent = 'Test Sitemap';
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        document.getElementById('sitemapUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                analyzeSitemap();
+            }
+        });
+    </script>
+</body>
+</html>
