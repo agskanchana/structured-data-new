@@ -3,1552 +3,961 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sitemap Structured Data Analyzer</title>
+    <title>XML Sitemap Structured Data Tester</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Google Sans', 'Segoe UI', Roboto, Arial, sans-serif;
-            background: #f8f9fa;
-            color: #202124;
-            line-height: 1.5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
         }
-
+        
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 24px;
-        }
-
-        .header {
-            background: #fff;
-            padding: 32px;
+            background: white;
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 30px;
         }
-
-        .header h1 {
-            font-size: 28px;
-            font-weight: 400;
-            color: #202124;
-            margin-bottom: 8px;
-            text-align: center;
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
         }
-
+        
         .subtitle {
-            color: #5f6368;
-            font-size: 14px;
-            margin-bottom: 24px;
-            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1em;
         }
-
+        
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
         .input-group {
-            display: flex;
-            gap: 12px;
-            max-width: 700px;
-            margin: 0 auto;
+            margin-bottom: 20px;
         }
-
-        .input-group input {
-            flex: 1;
-            padding: 12px 16px;
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
             font-size: 14px;
-            border: 1px solid #dadce0;
-            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus {
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            border-color: #667eea;
         }
-
-        .input-group input:focus {
-            border-color: #1a73e8;
-            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        
+        .inline-input {
+            display: flex;
+            gap: 10px;
         }
-
-        .btn-primary {
+        
+        .inline-input input {
+            flex: 1;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        button {
             padding: 12px 24px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #fff;
-            background: #1a73e8;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1557b0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .batch-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .batch-buttons span {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .batch-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        
+        .batch-btn.batch-1 { background: #28a745; color: white; }
+        .batch-btn.batch-2 { background: #17a2b8; color: white; }
+        .batch-btn.batch-3 { background: #ffc107; color: #333; }
+        .batch-btn.batch-4 { background: #fd7e14; color: white; }
+        .batch-btn.batch-5 { background: #dc3545; color: white; }
+        .batch-btn.batch-6 { background: #6f42c1; color: white; }
+        .batch-btn.batch-7 { background: #20c997; color: white; }
+        .batch-btn.batch-8 { background: #e83e8c; color: white; }
+        .batch-btn.batch-9 { background: #6c757d; color: white; }
+        .batch-btn.batch-10 { background: #343a40; color: white; }
+        
+        .url-count {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .url-list {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .url-item {
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+        
+        .url-item:last-child {
+            border-bottom: none;
+        }
+        
+        .url-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            background: #1557b0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-primary:disabled {
-            background: #dadce0;
-            cursor: not-allowed;
-        }
-
-        .loading-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid #fff;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: inline-block;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .status {
-            margin-top: 20px;
-            display: none;
-            text-align: center;
-        }
-
-        .status.active {
-            display: block;
-        }
-
-        .status-text {
-            font-size: 14px;
-            color: #5f6368;
-            margin-bottom: 8px;
-        }
-
-        .progress-bar {
-            height: 4px;
-            background: #e8eaed;
-            border-radius: 2px;
-            overflow: hidden;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: #1a73e8;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .error-message {
-            margin-top: 16px;
             padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .url-header:hover {
+            background: #f8f9fa;
+        }
+        
+        .url-number {
+            min-width: 40px;
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .url-text {
+            flex: 1;
+            color: #1a0dab;
+            word-break: break-all;
+            font-size: 14px;
+        }
+        
+        .url-batch {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+        
+        .url-status {
+            display: flex;
+            gap: 8px;
+            margin-left: 15px;
+        }
+        
+        .status-btn {
+            padding: 4px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+            border: 2px solid transparent;
+        }
+        
+        .status-btn.pass {
+            background: #e6f4ea;
+            color: #188038;
+            border-color: #188038;
+        }
+        
+        .status-btn.pass.active {
+            background: #188038;
+            color: white;
+        }
+        
+        .status-btn.fail {
             background: #fce8e6;
             color: #c5221f;
-            border-radius: 8px;
-            font-size: 14px;
-            display: none;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+            border-color: #c5221f;
         }
-
+        
+        .status-btn.fail.active {
+            background: #c5221f;
+            color: white;
+        }
+        
+        .url-arrow {
+            color: #999;
+            margin-left: 10px;
+            transition: transform 0.2s;
+        }
+        
+        .url-arrow.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .url-details {
+            display: none;
+            padding: 16px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .url-details.expanded {
+            display: block;
+        }
+        
+        .url-details a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 16px;
+            background: #e8f0fe;
+            border-radius: 6px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .url-details a:hover {
+            background: #d2e3fc;
+        }
+        
+        .url-details a svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .notes-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-card {
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+        
+        .summary-card.total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .summary-card.passed { background: #28a745; }
+        .summary-card.failed { background: #dc3545; }
+        .summary-card.pending { background: #6c757d; }
+        
+        .summary-card h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+        
+        .summary-card .number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .github-section {
+            background: #f0f7ff;
+            border: 2px solid #1a73e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .github-section h3 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+        }
+        
+        .report-link-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .report-link-box h3 {
+            color: #155724;
+            margin-bottom: 10px;
+        }
+        
+        .report-link-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #28a745;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
         .error-message.active {
             display: block;
         }
-
-        .results {
-            display: none;
-        }
-
-        .results.active {
-            display: block;
-        }
-
-        .summary {
-            display: flex;
-            gap: 24px;
-            margin-bottom: 24px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .summary-item {
-            text-align: center;
-            min-width: 100px;
-        }
-
-        .summary-value {
-            font-size: 32px;
-            font-weight: 500;
-            color: #202124;
-        }
-
-        .summary-value.success {
-            color: #188038;
-        }
-
-        .summary-value.warnings {
-            color: #f9ab00;
-        }
-
-        .summary-value.errors {
-            color: #ea4335;
-        }
-
-        .summary-label {
-            font-size: 12px;
-            color: #5f6368;
-            margin-top: 4px;
-        }
-
-        .url-card {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-
-        .url-header {
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e8eaed;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .url-left {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .url-link {
-            color: #1a73e8;
-            text-decoration: none;
-            font-size: 14px;
-            word-break: break-all;
-        }
-
-        .url-link:hover {
-            text-decoration: underline;
-        }
-
-        .url-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .google-test-link {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #5f6368;
-            text-decoration: none;
-            font-size: 13px;
-            padding: 6px 12px;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-
-        .google-test-link:hover {
-            background: #f1f3f4;
-            color: #1a73e8;
-        }
-
-        .google-test-link svg {
+        
+        .loading {
+            display: inline-block;
             width: 16px;
             height: 16px;
-        }
-
-        .btn-retest {
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: 500;
-            color: #1a73e8;
-            background: #e8f0fe;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-retest:hover:not(:disabled) {
-            background: #d2e3fc;
-        }
-
-        .btn-retest:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .status-badge.success {
-            background: #e6f4ea;
-            color: #188038;
-        }
-
-        .status-badge.warning {
-            background: #fef7e0;
-            color: #b06000;
-        }
-
-        .status-badge.error {
-            background: #fce8e6;
-            color: #c5221f;
-        }
-
-        .status-badge.no-data {
-            background: #f1f3f4;
-            color: #5f6368;
-        }
-
-        .error-content {
-            padding: 16px 20px;
-            background: #fce8e6;
-        }
-
-        .error-text {
-            color: #c5221f;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .detected-data-header {
-            padding: 12px 20px;
-            font-size: 12px;
-            font-weight: 500;
-            color: #5f6368;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid #e8eaed;
-            background: #f8f9fa;
-        }
-
-        .no-data-message {
-            padding: 24px 20px;
-            text-align: center;
-            color: #5f6368;
-            font-size: 14px;
-        }
-
-        .schema-list {
-            list-style: none;
-        }
-
-        .schema-item {
-            border-bottom: 1px solid #e8eaed;
-        }
-
-        .schema-item:last-child {
-            border-bottom: none;
-        }
-
-        .schema-item-header {
-            display: flex;
-            align-items: center;
-            padding: 16px 20px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .schema-item-header:hover {
-            background: #f8f9fa;
-        }
-
-        .schema-icon {
-            width: 24px;
-            height: 24px;
+            border: 3px solid rgba(255,255,255,.3);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 12px;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
         }
-
-        .schema-icon.valid {
-            background: #e6f4ea;
-            color: #188038;
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
-
-        .schema-icon.warning {
-            background: #fef7e0;
-            color: #b06000;
+        
+        .hidden {
+            display: none !important;
         }
-
-        .schema-icon.error {
-            background: #fce8e6;
-            color: #c5221f;
-        }
-
-        .schema-icon svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .schema-info {
-            flex: 1;
-        }
-
-        .schema-name {
+        
+        .info-box {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
             font-size: 14px;
-            font-weight: 500;
-            color: #202124;
-        }
-
-        .schema-count {
-            font-size: 13px;
-            color: #5f6368;
-            margin-right: 8px;
-        }
-
-        .schema-count.has-warnings {
-            color: #b06000;
-        }
-
-        .schema-count.has-errors {
-            color: #c5221f;
-        }
-
-        .schema-arrow {
-            color: #5f6368;
-            transition: transform 0.2s;
-        }
-
-        .schema-arrow.expanded {
-            transform: rotate(90deg);
-        }
-
-        .schema-details {
-            display: none;
-            background: #f8f9fa;
-            border-top: 1px solid #e8eaed;
-        }
-
-        .schema-details.expanded {
-            display: block;
-        }
-
-        .detected-items-header {
-            padding: 12px 20px;
-            font-size: 11px;
-            font-weight: 500;
-            color: #5f6368;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .schema-item-detail {
-            margin: 0 12px 12px;
-            background: #fff;
-            border-radius: 8px;
-            border: 1px solid #e8eaed;
-            overflow: hidden;
-        }
-
-        .schema-item-detail-header {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .schema-item-detail-header:hover {
-            background: #f8f9fa;
-        }
-
-        .detail-icon {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #e6f4ea;
-            color: #188038;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-        }
-
-        .detail-icon.warning {
-            background: #fef7e0;
-            color: #b06000;
-        }
-
-        .detail-icon.error {
-            background: #fce8e6;
-            color: #c5221f;
-        }
-
-        .detail-icon svg {
-            width: 12px;
-            height: 12px;
-        }
-
-        .detail-name {
-            flex: 1;
-            font-size: 13px;
-            color: #202124;
-            word-break: break-word;
-        }
-
-        .detail-arrow {
-            color: #5f6368;
-            transition: transform 0.2s;
-        }
-
-        .detail-arrow.expanded {
-            transform: rotate(180deg);
-        }
-
-        .schema-properties {
-            display: none;
-            padding: 12px 16px;
-            background: #f8f9fa;
-            border-top: 1px solid #e8eaed;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 12px;
-        }
-
-        .schema-properties.expanded {
-            display: block;
-        }
-
-        .property-row {
-            display: flex;
-            gap: 8px;
-            padding: 4px 0;
-            line-height: 1.6;
-        }
-
-        .property-key {
-            color: #1a73e8;
-            min-width: 120px;
-            flex-shrink: 0;
-        }
-
-        .property-value {
-            color: #188038;
-            word-break: break-all;
-        }
-
-        .property-nested {
-            padding-left: 20px;
-            border-left: 1px solid #e8eaed;
-            margin-left: 10px;
-        }
-
-        /* Validation issues styles */
-        .validation-issues {
-            padding: 8px 16px;
-            background: #fffbeb;
-            border-top: 1px solid #fde68a;
-        }
-
-        .validation-issue {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            padding: 6px 0;
-            font-size: 12px;
-        }
-
-        .validation-issue.warning {
-            color: #92400e;
-        }
-
-        .validation-issue.error {
-            color: #c5221f;
-        }
-
-        .validation-issue svg {
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        @media (max-width: 600px) {
-            .input-group {
-                flex-direction: column;
-            }
-            
-            .url-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .url-actions {
-                width: 100%;
-                justify-content: flex-start;
-            }
-            
-            .summary {
-                gap: 16px;
-            }
-
-            .summary-item {
-                min-width: 70px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🔍 Sitemap Structured Data Analyzer</h1>
-            <p class="subtitle">Enter a sitemap URL to analyze structured data across all pages (similar to Google Rich Results Test)</p>
-            
+        <h1>🔍 XML Sitemap Structured Data Tester</h1>
+        <p class="subtitle">Fetch URLs from sitemap, test them in Google Rich Results Test, and generate a report</p>
+        
+        <div class="input-section">
             <div class="input-group">
-                <input type="text" id="sitemapUrl" placeholder="Enter sitemap URL (e.g., https://example.com/sitemap.xml)" value="https://www.queensdds.com/page-sitemap.xml">
-                <button class="btn-primary" id="analyzeBtn" onclick="analyzeSitemap()">
-                    <span id="btnText">Test Sitemap</span>
-                </button>
-            </div>
-
-            <div id="status" class="status">
-                <div class="status-text" id="statusText">Initializing...</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
+                <label for="sitemapUrl">Sitemap URL</label>
+                <div class="inline-input">
+                    <input type="text" id="sitemapUrl" placeholder="https://example.com/sitemap.xml" value="https://www.dentistempire.com/page-sitemap.xml">
+                    <button class="btn-primary" id="fetchBtn" onclick="fetchSitemap()">
+                        <span id="fetchBtnText">Fetch URLs</span>
+                    </button>
                 </div>
             </div>
-
-            <div id="errorMessage" class="error-message"></div>
+            
+            <div class="info-box">
+                <strong>How to use:</strong><br>
+                1. Enter sitemap URL and click "Fetch URLs"<br>
+                2. Click batch buttons to open 10 URLs at a time in Google Rich Results Test<br>
+                3. Mark each URL as Pass ✓ or Fail ✗ based on the test results<br>
+                4. Export the report to HTML or upload to GitHub Pages
+            </div>
         </div>
-
-        <div id="results" class="results">
-            <div class="summary" id="summary"></div>
-            <div id="urlCards"></div>
+        
+        <div id="errorMessage" class="error-message"></div>
+        
+        <div id="resultsSection" class="hidden">
+            <div class="summary-cards">
+                <div class="summary-card total">
+                    <h3>Total URLs</h3>
+                    <div class="number" id="totalCount">0</div>
+                </div>
+                <div class="summary-card passed">
+                    <h3>Passed</h3>
+                    <div class="number" id="passedCount">0</div>
+                </div>
+                <div class="summary-card failed">
+                    <h3>Failed</h3>
+                    <div class="number" id="failedCount">0</div>
+                </div>
+                <div class="summary-card pending">
+                    <h3>Pending</h3>
+                    <div class="number" id="pendingCount">0</div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-success" onclick="expandAll()">Expand All</button>
+                <button class="btn-danger" onclick="collapseAll()">Collapse All</button>
+                <button class="btn-warning" onclick="markAllPassed()">Mark All Passed</button>
+                <button class="btn-secondary" onclick="resetAll()">Reset All</button>
+            </div>
+            
+            <div class="url-count" id="urlCount">Processed 0 URLs</div>
+            
+            <div class="batch-buttons" id="batchButtons">
+                <span>Open in batches:</span>
+            </div>
+            
+            <div class="url-list" id="urlList"></div>
+            
+            <div class="github-section">
+                <h3>📤 Export Report</h3>
+                <div class="input-group">
+                    <label for="githubToken">GitHub Personal Access Token (optional - for uploading)</label>
+                    <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                </div>
+                <div class="input-group">
+                    <label for="githubRepo">GitHub Repository (optional - for uploading)</label>
+                    <input type="text" id="githubRepo" placeholder="username/repo-name">
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="exportToHtml(false)">📥 Download HTML Report</button>
+                    <button class="btn-success" onclick="exportToHtml(true)" id="uploadBtn">📤 Upload to GitHub Pages</button>
+                </div>
+            </div>
+            
+            <div class="report-link-box" id="reportLinkBox">
+                <h3>✅ Report Uploaded Successfully!</h3>
+                <p style="color: #155724; margin-bottom: 10px;">Your report has been uploaded to GitHub. Share this link:</p>
+                <input type="text" id="reportLinkInput" readonly>
+                <div class="button-group">
+                    <button class="btn-success" onclick="copyReportLink()">📋 Copy Link</button>
+                    <button class="btn-primary" onclick="openReportLink()">🔗 Open Report</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        let isAnalyzing = false;
-        let allResults = [];
-
-        // Comprehensive mapping of schema types to Google Rich Results categories
-        const richResultTypes = {
-            // Articles
-            'Article': 'Articles',
-            'NewsArticle': 'Articles',
-            'BlogPosting': 'Articles',
-            'TechArticle': 'Articles',
-            'ScholarlyArticle': 'Articles',
-            'SocialMediaPosting': 'Articles',
-            'Report': 'Articles',
-            'AdvertiserContentArticle': 'Articles',
-            'SatiricalArticle': 'Articles',
-            
-            // Breadcrumbs
-            'BreadcrumbList': 'Breadcrumbs',
-            
-            // Local Business (all subtypes)
-            'LocalBusiness': 'Local businesses',
-            'Restaurant': 'Local businesses',
-            'Dentist': 'Local businesses',
-            'MedicalBusiness': 'Local businesses',
-            'HealthAndBeautyBusiness': 'Local businesses',
-            'Store': 'Local businesses',
-            'FoodEstablishment': 'Local businesses',
-            'LodgingBusiness': 'Local businesses',
-            'ProfessionalService': 'Local businesses',
-            'MedicalClinic': 'Local businesses',
-            'Physician': 'Local businesses',
-            'Hospital': 'Local businesses',
-            'AutoDealer': 'Local businesses',
-            'AutoRepair': 'Local businesses',
-            'Bakery': 'Local businesses',
-            'BarOrPub': 'Local businesses',
-            'BeautySalon': 'Local businesses',
-            'CafeOrCoffeeShop': 'Local businesses',
-            'DaySpa': 'Local businesses',
-            'Florist': 'Local businesses',
-            'HairSalon': 'Local businesses',
-            'IceCreamShop': 'Local businesses',
-            'NailSalon': 'Local businesses',
-            'TattooParlor': 'Local businesses',
-            'Plumber': 'Local businesses',
-            'Electrician': 'Local businesses',
-            'GeneralContractor': 'Local businesses',
-            'HVACBusiness': 'Local businesses',
-            'RoofingContractor': 'Local businesses',
-            'EmergencyService': 'Local businesses',
-            'FinancialService': 'Local businesses',
-            'InsuranceAgency': 'Local businesses',
-            'RealEstateAgent': 'Local businesses',
-            'TravelAgency': 'Local businesses',
-            'LegalService': 'Local businesses',
-            'AccountingService': 'Local businesses',
-            'AnimalShelter': 'Local businesses',
-            'ChildCare': 'Local businesses',
-            'DryCleaningOrLaundry': 'Local businesses',
-            'EmploymentAgency': 'Local businesses',
-            'EntertainmentBusiness': 'Local businesses',
-            'ExerciseGym': 'Local businesses',
-            'GolfCourse': 'Local businesses',
-            'SportsActivityLocation': 'Local businesses',
-            'SkiResort': 'Local businesses',
-            'StadiumOrArena': 'Local businesses',
-            'TennisComplex': 'Local businesses',
-            'HomeAndConstructionBusiness': 'Local businesses',
-            'InternetCafe': 'Local businesses',
-            'Library': 'Local businesses',
-            'RecyclingCenter': 'Local businesses',
-            'SelfStorage': 'Local businesses',
-            'ShoppingCenter': 'Local businesses',
-            'TelevisionStation': 'Local businesses',
-            'TouristInformationCenter': 'Local businesses',
-            'MovingCompany': 'Local businesses',
-            'AutomotiveBusiness': 'Local businesses',
-            'GasStation': 'Local businesses',
-            'MotorcycleDealer': 'Local businesses',
-            'MotorcycleRepair': 'Local businesses',
-            'Optician': 'Local businesses',
-            'VeterinaryCare': 'Local businesses',
-            'Attorney': 'Local businesses',
-            'Notary': 'Local businesses',
-            
-            // Organization
-            'Organization': 'Organization',
-            'Corporation': 'Organization',
-            'GovernmentOrganization': 'Organization',
-            'NGO': 'Organization',
-            'EducationalOrganization': 'Organization',
-            'SportsOrganization': 'Organization',
-            'PerformingGroup': 'Organization',
-            'MusicGroup': 'Organization',
-            'Airline': 'Organization',
-            'Consortium': 'Organization',
-            'FundingScheme': 'Organization',
-            'LibrarySystem': 'Organization',
-            'MedicalOrganization': 'Organization',
-            'NewsMediaOrganization': 'Organization',
-            'WorkersUnion': 'Organization',
-            
-            // Videos
-            'VideoObject': 'Videos',
-            'VideoGallery': 'Videos',
-            'Clip': 'Videos',
-            
-            // Products
-            'Product': 'Products',
-            'ProductGroup': 'Products',
-            'IndividualProduct': 'Products',
-            'ProductModel': 'Products',
-            
-            // FAQ
-            'FAQPage': 'FAQs',
-            
-            // How-to
-            'HowTo': 'How-to',
-            'HowToDirection': 'How-to',
-            'HowToSection': 'How-to',
-            'HowToStep': 'How-to',
-            'HowToTip': 'How-to',
-            
-            // Recipe
-            'Recipe': 'Recipes',
-            
-            // Events
-            'Event': 'Events',
-            'BusinessEvent': 'Events',
-            'ChildrensEvent': 'Events',
-            'ComedyEvent': 'Events',
-            'CourseInstance': 'Events',
-            'DanceEvent': 'Events',
-            'DeliveryEvent': 'Events',
-            'EducationEvent': 'Events',
-            'ExhibitionEvent': 'Events',
-            'Festival': 'Events',
-            'FoodEvent': 'Events',
-            'Hackathon': 'Events',
-            'LiteraryEvent': 'Events',
-            'MusicEvent': 'Events',
-            'PublicationEvent': 'Events',
-            'SaleEvent': 'Events',
-            'ScreeningEvent': 'Events',
-            'SocialEvent': 'Events',
-            'SportsEvent': 'Events',
-            'TheaterEvent': 'Events',
-            'VisualArtsEvent': 'Events',
-            
-            // Job Posting
-            'JobPosting': 'Job postings',
-            
-            // Course
-            'Course': 'Courses',
-            
-            // Review/Rating
-            'Review': 'Reviews',
-            'CriticReview': 'Reviews',
-            'EmployerReview': 'Reviews',
-            'UserReview': 'Reviews',
-            'AggregateRating': 'Reviews',
-            
-            // Software App
-            'SoftwareApplication': 'Software apps',
-            'MobileApplication': 'Software apps',
-            'WebApplication': 'Software apps',
-            
-            // Book
-            'Book': 'Books',
-            
-            // Dataset
-            'Dataset': 'Datasets',
-            
-            // Profile / Person page
-            'ProfilePage': 'Profile page',
-            'Person': 'Profile page',
-            
-            // WebSite (for sitelinks search box)
-            'WebSite': 'Sitelinks search box',
-            
-            // Image
-            'ImageObject': 'Images',
-            'ImageGallery': 'Images',
-            
-            // Q&A
-            'QAPage': 'Q&A',
-            'Question': 'Q&A',
-            'Answer': 'Q&A',
-            
-            // Claim Review / Fact Check
-            'ClaimReview': 'Fact check',
-            
-            // Discussion Forum
-            'DiscussionForumPosting': 'Discussion forum',
-            
-            // Employer Aggregate Rating
-            'EmployerAggregateRating': 'Employer aggregate rating',
-            
-            // Learning Video
-            'LearningResource': 'Learning video',
-            
-            // Math Solver
-            'MathSolver': 'Math solver',
-            
-            // Movie / TV
-            'Movie': 'Movies',
-            'TVSeries': 'TV series',
-            'TVSeason': 'TV series',
-            'TVEpisode': 'TV series',
-            
-            // Music
-            'MusicRecording': 'Music',
-            'MusicAlbum': 'Music',
-            'MusicPlaylist': 'Music',
-            'MusicRelease': 'Music',
-            
-            // Podcast
-            'PodcastSeries': 'Podcast',
-            'PodcastEpisode': 'Podcast',
-            
-            // Vehicle
-            'Vehicle': 'Vehicle listing',
-            'Car': 'Vehicle listing',
-            
-            // Vacation Rental
-            'VacationRental': 'Vacation rental',
-            'LodgingReservation': 'Vacation rental',
-            
-            // 3D Model
-            '3DModel': '3D model',
-            
-            // Logo (Brand)
-            'Brand': 'Logo',
-            
-            // Carousel / ItemList
-            'ItemList': 'Carousel'
-        };
-
-        // Required fields for validation (based on Google's requirements)
-        const requiredFields = {
-            'Article': ['headline', 'image', 'datePublished', 'author'],
-            'NewsArticle': ['headline', 'image', 'datePublished', 'author'],
-            'BlogPosting': ['headline', 'image', 'datePublished', 'author'],
-            'LocalBusiness': ['name', 'address'],
-            'Dentist': ['name', 'address'],
-            'MedicalBusiness': ['name', 'address'],
-            'Restaurant': ['name', 'address'],
-            'BreadcrumbList': ['itemListElement'],
-            'FAQPage': ['mainEntity'],
-            'VideoObject': ['name', 'description', 'thumbnailUrl', 'uploadDate'],
-            'Product': ['name'],
-            'Event': ['name', 'startDate', 'location'],
-            'Recipe': ['name', 'image'],
-            'HowTo': ['name', 'step'],
-            'JobPosting': ['title', 'description', 'datePosted', 'hiringOrganization'],
-            'Course': ['name', 'provider'],
-            'Review': ['itemReviewed', 'author'],
-            'Organization': ['name'],
-            'WebSite': ['name', 'url'],
-            'Person': ['name'],
-            'ProfilePage': ['mainEntity'],
-            'Book': ['name', 'author'],
-            'Movie': ['name'],
-            'SoftwareApplication': ['name'],
-            'Dataset': ['name', 'description'],
-            'QAPage': ['mainEntity'],
-            'ClaimReview': ['claimReviewed', 'reviewRating'],
-            'PodcastSeries': ['name'],
-            'PodcastEpisode': ['name']
-        };
-
-        // Recommended fields (warnings if missing)
-        const recommendedFields = {
-            'Article': ['dateModified', 'publisher'],
-            'LocalBusiness': ['telephone', 'openingHours', 'geo', 'image'],
-            'Dentist': ['telephone', 'openingHours', 'geo', 'image', 'priceRange'],
-            'Product': ['image', 'description', 'offers', 'aggregateRating', 'brand'],
-            'VideoObject': ['duration', 'contentUrl', 'embedUrl'],
-            'Event': ['description', 'image', 'offers', 'endDate', 'performer'],
-            'Recipe': ['author', 'datePublished', 'prepTime', 'cookTime', 'nutrition', 'recipeYield'],
-            'Organization': ['logo', 'url', 'contactPoint', 'sameAs'],
-            'Review': ['reviewRating'],
-            'JobPosting': ['validThrough', 'employmentType', 'baseSalary', 'jobLocation'],
-            'WebSite': ['potentialAction'],
-            'Person': ['image', 'url', 'sameAs', 'jobTitle'],
-            'ProfilePage': ['dateModified', 'dateCreated'],
-            'FAQPage': [],
-            'BreadcrumbList': []
-        };
-
-        function isRichResultType(type) {
-            return richResultTypes.hasOwnProperty(type);
-        }
-
-        function getCategoryForType(type) {
-            if (Array.isArray(type)) type = type[0];
-            return richResultTypes[type] || null;
-        }
-
-        function getGoogleRichResultsUrl(url) {
-            return `https://search.google.com/test/rich-results?url=${encodeURIComponent(url)}`;
-        }
-
-        function getItemName(data) {
-            return data.name || data.headline || data.title || data['@id'] || 'Item';
-        }
-
-        function validateItem(type, data) {
-            const issues = { errors: [], warnings: [] };
-            
-            // Check required fields
-            const required = requiredFields[type] || [];
-            required.forEach(field => {
-                if (!hasField(data, field)) {
-                    issues.errors.push(`Missing required field: ${field}`);
-                }
-            });
-
-            // Check recommended fields
-            const recommended = recommendedFields[type] || [];
-            recommended.forEach(field => {
-                if (!hasField(data, field)) {
-                    issues.warnings.push(`Missing recommended field: ${field}`);
-                }
-            });
-
-            // Type-specific validations
-            if (type === 'VideoObject') {
-                if (data.duration && !isValidDuration(data.duration)) {
-                    issues.warnings.push('Duration should be in ISO 8601 format');
+        let allUrls = [];
+        let urlStatuses = {}; // { url: { status: 'pass'|'fail'|'pending', notes: '' } }
+        const BATCH_SIZE = 10;
+        
+        // Load saved credentials
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedToken = localStorage.getItem('github_token');
+            const savedRepo = localStorage.getItem('github_repo');
+            if (savedToken) document.getElementById('githubToken').value = savedToken;
+            if (savedRepo) document.getElementById('githubRepo').value = savedRepo;
+        });
+        
+        // CORS proxies for fallback
+        const corsProxies = [
+            (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+            (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+            (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+        ];
+        
+        async function fetchWithProxy(url) {
+            for (const proxyFn of corsProxies) {
+                try {
+                    const proxyUrl = proxyFn(url);
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 15000);
+                    
+                    const response = await fetch(proxyUrl, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    
+                    if (response.ok) {
+                        return await response.text();
+                    }
+                } catch (e) {
+                    continue;
                 }
             }
-
-            if (type.includes('Article') || type === 'BlogPosting' || type === 'NewsArticle') {
-                if (data.image && !isValidImageValue(data.image)) {
-                    issues.warnings.push('Image should have width >= 1200px for best results');
-                }
-            }
-
-            if (type === 'FAQPage') {
-                if (data.mainEntity && Array.isArray(data.mainEntity) && data.mainEntity.length === 0) {
-                    issues.errors.push('FAQPage must have at least one Question');
-                }
-            }
-
-            return issues;
+            throw new Error('Failed to fetch sitemap. Please try again.');
         }
-
-        function hasField(data, field) {
-            if (!data) return false;
-            if (data[field] !== undefined && data[field] !== null && data[field] !== '') return true;
-            // Check nested
-            for (let key in data) {
-                if (typeof data[key] === 'object' && data[key] !== null && !Array.isArray(data[key])) {
-                    if (hasField(data[key], field)) return true;
-                }
-            }
-            return false;
-        }
-
-        function isValidDuration(duration) {
-            return /^P(?:\d+Y)?(?:\d+M)?(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+S)?)?$/.test(duration);
-        }
-
-        function isValidImageValue(image) {
-            return image !== undefined;
-        }
-
-        async function analyzeSitemap() {
-            if (isAnalyzing) return;
-            
+        
+        async function fetchSitemap() {
             const sitemapUrl = document.getElementById('sitemapUrl').value.trim();
             if (!sitemapUrl) {
                 showError('Please enter a sitemap URL');
                 return;
             }
-
-            try {
-                new URL(sitemapUrl);
-            } catch (e) {
-                showError('Please enter a valid URL');
-                return;
-            }
-
-            isAnalyzing = true;
-            updateButton(true);
-            showStatus('Fetching sitemap...');
+            
+            const fetchBtn = document.getElementById('fetchBtn');
+            const fetchBtnText = document.getElementById('fetchBtnText');
+            
+            fetchBtn.disabled = true;
+            fetchBtnText.innerHTML = '<span class="loading"></span> Fetching...';
             hideError();
-            hideResults();
-
+            
             try {
-                const urls = await fetchSitemap(sitemapUrl);
+                const text = await fetchWithProxy(sitemapUrl);
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text, 'text/xml');
                 
-                if (urls.length === 0) {
+                const parserError = xmlDoc.querySelector('parsererror');
+                if (parserError) {
+                    throw new Error('Invalid XML sitemap');
+                }
+                
+                const urlElements = xmlDoc.querySelectorAll('url > loc');
+                allUrls = Array.from(urlElements).map(el => el.textContent.trim());
+                
+                if (allUrls.length === 0) {
                     throw new Error('No URLs found in sitemap');
                 }
-
-                showStatus(`Found ${urls.length} URLs. Analyzing structured data...`);
-
-                allResults = [];
-                for (let i = 0; i < urls.length; i++) {
-                    updateProgress((i / urls.length) * 100);
-                    showStatus(`Analyzing ${i + 1} of ${urls.length}: ${urls[i]}`);
-                    
-                    const result = await analyzeUrl(urls[i]);
-                    allResults.push(result);
-                    
-                    await sleep(300);
-                }
-
-                updateProgress(100);
-                showStatus('Analysis complete!');
-                displayResults(allResults);
-
-                setTimeout(() => hideStatus(), 1500);
-
-            } catch (error) {
-                console.error('Error:', error);
-                showError(`Error: ${error.message}`);
-                hideStatus();
-            } finally {
-                isAnalyzing = false;
-                updateButton(false);
-            }
-        }
-
-        async function retestUrl(index) {
-            const url = allResults[index].url;
-            const card = document.querySelector(`[data-index="${index}"]`);
-            const retestBtn = card.querySelector('.btn-retest');
-            
-            retestBtn.disabled = true;
-            retestBtn.innerHTML = '<span class="loading-spinner"></span>';
-
-            const result = await analyzeUrl(url);
-            allResults[index] = result;
-            
-            const newCard = createUrlCard(result, index);
-            card.outerHTML = newCard;
-            
-            updateSummary();
-        }
-
-        async function fetchSitemap(url) {
-            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-            
-            const response = await fetch(proxyUrl);
-            if (!response.ok) {
-                throw new Error(`Failed to fetch sitemap: ${response.statusText}`);
-            }
-
-            const text = await response.text();
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(text, 'text/xml');
-
-            const parserError = xmlDoc.querySelector('parsererror');
-            if (parserError) {
-                throw new Error('Invalid XML sitemap');
-            }
-
-            const urlElements = xmlDoc.querySelectorAll('url > loc');
-            return Array.from(urlElements).map(el => el.textContent.trim());
-        }
-
-        async function analyzeUrl(url) {
-            try {
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-                const response = await fetch(proxyUrl);
                 
-                if (!response.ok) {
-                    return { url, status: 'fetch-error', error: 'Failed to fetch page', categories: {} };
-                }
-
-                const html = await response.text();
-                const categories = extractRichResults(html);
-                
-                const hasData = Object.keys(categories).length > 0;
-                
-                // Calculate total errors and warnings
-                let totalErrors = 0;
-                let totalWarnings = 0;
-                
-                Object.values(categories).forEach(cat => {
-                    cat.items.forEach(item => {
-                        totalErrors += item.validation.errors.length;
-                        totalWarnings += item.validation.warnings.length;
-                    });
+                // Initialize statuses
+                urlStatuses = {};
+                allUrls.forEach(url => {
+                    urlStatuses[url] = { status: 'pending', notes: '' };
                 });
                 
-                let status = 'success';
-                if (totalErrors > 0) {
-                    status = 'has-errors';
-                } else if (totalWarnings > 0) {
-                    status = 'has-warnings';
-                } else if (!hasData) {
-                    status = 'no-data';
-                }
+                renderResults();
+                document.getElementById('resultsSection').classList.remove('hidden');
                 
-                return {
-                    url,
-                    status,
-                    categories,
-                    totalErrors,
-                    totalWarnings
-                };
-
             } catch (error) {
-                return { url, status: 'fetch-error', error: 'Failed to fetch page', categories: {} };
+                showError(error.message);
+            } finally {
+                fetchBtn.disabled = false;
+                fetchBtnText.textContent = 'Fetch URLs';
             }
         }
-
-        function extractRichResults(html) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const categories = {};
-            const processedItems = new Set();
-
-            const jsonLdScripts = doc.querySelectorAll('script[type="application/ld+json"]');
-            jsonLdScripts.forEach((script) => {
-                try {
-                    let data = JSON.parse(script.textContent);
-                    
-                    if (data['@graph']) {
-                        data['@graph'].forEach(item => processItem(item, categories, processedItems));
-                    } else if (Array.isArray(data)) {
-                        data.forEach(item => processItem(item, categories, processedItems));
-                    } else {
-                        processItem(data, categories, processedItems);
-                    }
-                } catch (e) {
-                    // Skip invalid JSON
-                }
-            });
-
-            return categories;
+        
+        function renderResults() {
+            renderSummary();
+            renderBatchButtons();
+            renderUrlList();
         }
-
-        function processItem(item, categories, processedItems, depth = 0) {
-            if (!item || typeof item !== 'object' || depth > 5) return;
+        
+        function renderSummary() {
+            const total = allUrls.length;
+            const passed = Object.values(urlStatuses).filter(s => s.status === 'pass').length;
+            const failed = Object.values(urlStatuses).filter(s => s.status === 'fail').length;
+            const pending = total - passed - failed;
             
-            // Get types from the item
-            const types = item['@type'] ? (Array.isArray(item['@type']) ? item['@type'] : [item['@type']]) : [];
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('passedCount').textContent = passed;
+            document.getElementById('failedCount').textContent = failed;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('urlCount').textContent = `Processed ${total} URLs`;
+        }
+        
+        function renderBatchButtons() {
+            const container = document.getElementById('batchButtons');
+            const numBatches = Math.ceil(allUrls.length / BATCH_SIZE);
             
-            types.forEach(type => {
-                const category = getCategoryForType(type);
-                if (category) {
-                    const itemKey = JSON.stringify({ type, name: getItemName(item), id: item['@id'] || '' });
-                    if (!processedItems.has(itemKey)) {
-                        processedItems.add(itemKey);
-                        
-                        if (!categories[category]) {
-                            categories[category] = { items: [], errors: 0, warnings: 0 };
-                        }
-                        
-                        const validation = validateItem(type, item);
-                        
-                        categories[category].items.push({
-                            type: type,
-                            name: getItemName(item),
-                            data: item,
-                            validation: validation
-                        });
-                        
-                        categories[category].errors += validation.errors.length;
-                        categories[category].warnings += validation.warnings.length;
-                    }
-                }
-            });
+            let html = '<span>Open in batches:</span>';
+            for (let i = 0; i < numBatches; i++) {
+                const start = i * BATCH_SIZE + 1;
+                const end = Math.min((i + 1) * BATCH_SIZE, allUrls.length);
+                const colorClass = `batch-${(i % 10) + 1}`;
+                html += `<button class="batch-btn ${colorClass}" onclick="openBatch(${i})">Batch ${i + 1} (${start}-${end})</button>`;
+            }
+            container.innerHTML = html;
+        }
+        
+        function renderUrlList() {
+            const container = document.getElementById('urlList');
+            let html = '';
             
-            // Recursively check nested objects for additional rich result types
-            for (let key in item) {
-                if (key.startsWith('@')) continue;
+            allUrls.forEach((url, index) => {
+                const batchNum = Math.floor(index / BATCH_SIZE) + 1;
+                const status = urlStatuses[url];
+                const passActive = status.status === 'pass' ? 'active' : '';
+                const failActive = status.status === 'fail' ? 'active' : '';
+                const colorClass = `batch-${((batchNum - 1) % 10) + 1}`;
                 
-                const value = item[key];
-                if (Array.isArray(value)) {
-                    value.forEach(v => {
-                        if (typeof v === 'object' && v !== null) {
-                            processItem(v, categories, processedItems, depth + 1);
-                        }
-                    });
-                } else if (typeof value === 'object' && value !== null) {
-                    processItem(value, categories, processedItems, depth + 1);
-                }
-            }
-        }
-
-        function renderObjectProperties(obj) {
-            if (Array.isArray(obj)) {
-                return obj.map((item, i) => `
-                    <div class="property-row">
-                        <span class="property-key">[${i}]</span>
-                        ${typeof item === 'object' ? '' : `<span class="property-value">${escapeHtml(String(item))}</span>`}
-                    </div>
-                    ${typeof item === 'object' ? `<div class="property-nested">${renderObjectProperties(item)}</div>` : ''}
-                `).join('');
-            }
-            
-            return Object.entries(obj)
-                .filter(([key]) => !key.startsWith('@') || key === '@type' || key === '@id')
-                .map(([key, value]) => {
-                    if (typeof value === 'object' && value !== null) {
-                        return `
-                            <div class="property-row">
-                                <span class="property-key">${escapeHtml(key)}</span>
-                                ${value['@type'] ? `<span class="property-value">${escapeHtml(Array.isArray(value['@type']) ? value['@type'].join(', ') : value['@type'])}</span>` : ''}
+                html += `
+                    <div class="url-item" data-index="${index}">
+                        <div class="url-header" onclick="toggleUrl(${index})">
+                            <span class="url-number">${index + 1}.</span>
+                            <span class="url-text">${escapeHtml(url)}</span>
+                            <span class="url-batch ${colorClass}">(Batch ${batchNum})</span>
+                            <div class="url-status" onclick="event.stopPropagation()">
+                                <button class="status-btn pass ${passActive}" onclick="setStatus(${index}, 'pass')">✓ Pass</button>
+                                <button class="status-btn fail ${failActive}" onclick="setStatus(${index}, 'fail')">✗ Fail</button>
                             </div>
-                            <div class="property-nested">${renderObjectProperties(value)}</div>
-                        `;
-                    }
-                    return `
-                        <div class="property-row">
-                            <span class="property-key">${escapeHtml(key)}</span>
-                            <span class="property-value">${escapeHtml(String(value))}</span>
+                            <span class="url-arrow" id="arrow-${index}">▼</span>
                         </div>
-                    `;
-                }).join('');
+                        <div class="url-details" id="details-${index}">
+                            <a href="${getGoogleTestUrl(url)}" target="_blank">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                                Open in Google Rich Results Test
+                            </a>
+                            <a href="${url}" target="_blank">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                                Visit Page
+                            </a>
+                            <div style="margin-top: 10px;">
+                                <label style="font-size: 13px; color: #666;">Notes:</label>
+                                <input type="text" class="notes-input" placeholder="Add notes about issues found..." 
+                                    value="${escapeHtml(status.notes)}" 
+                                    onchange="setNotes(${index}, this.value)">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
         }
-
+        
+        function getGoogleTestUrl(url) {
+            return `https://search.google.com/test/rich-results?url=${encodeURIComponent(url)}`;
+        }
+        
+        function openBatch(batchIndex) {
+            const start = batchIndex * BATCH_SIZE;
+            const end = Math.min(start + BATCH_SIZE, allUrls.length);
+            
+            for (let i = start; i < end; i++) {
+                window.open(getGoogleTestUrl(allUrls[i]), '_blank');
+            }
+        }
+        
+        function toggleUrl(index) {
+            const details = document.getElementById(`details-${index}`);
+            const arrow = document.getElementById(`arrow-${index}`);
+            
+            details.classList.toggle('expanded');
+            arrow.classList.toggle('expanded');
+        }
+        
+        function setStatus(index, status) {
+            const url = allUrls[index];
+            urlStatuses[url].status = status;
+            renderResults();
+        }
+        
+        function setNotes(index, notes) {
+            const url = allUrls[index];
+            urlStatuses[url].notes = notes;
+        }
+        
+        function expandAll() {
+            document.querySelectorAll('.url-details').forEach(el => el.classList.add('expanded'));
+            document.querySelectorAll('.url-arrow').forEach(el => el.classList.add('expanded'));
+        }
+        
+        function collapseAll() {
+            document.querySelectorAll('.url-details').forEach(el => el.classList.remove('expanded'));
+            document.querySelectorAll('.url-arrow').forEach(el => el.classList.remove('expanded'));
+        }
+        
+        function markAllPassed() {
+            allUrls.forEach(url => {
+                if (urlStatuses[url].status === 'pending') {
+                    urlStatuses[url].status = 'pass';
+                }
+            });
+            renderResults();
+        }
+        
+        function resetAll() {
+            allUrls.forEach(url => {
+                urlStatuses[url].status = 'pending';
+                urlStatuses[url].notes = '';
+            });
+            renderResults();
+        }
+        
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-
-        function toggleCategory(cardIndex, category) {
-            const details = document.querySelector(`[data-card="${cardIndex}"][data-category="${category}"]`);
-            const arrow = document.querySelector(`[data-arrow-card="${cardIndex}"][data-arrow-category="${category}"]`);
-            
-            if (details) {
-                details.classList.toggle('expanded');
-                arrow.classList.toggle('expanded');
-            }
-        }
-
-        function toggleItem(cardIndex, category, itemIndex) {
-            const props = document.querySelector(`[data-props-card="${cardIndex}"][data-props-category="${category}"][data-props-item="${itemIndex}"]`);
-            const arrow = document.querySelector(`[data-item-arrow-card="${cardIndex}"][data-item-arrow-category="${category}"][data-item-arrow-item="${itemIndex}"]`);
-            
-            if (props) {
-                props.classList.toggle('expanded');
-                arrow.classList.toggle('expanded');
-            }
-        }
-
-        function createUrlCard(result, index) {
-            const categories = Object.entries(result.categories || {});
-            const hasData = categories.length > 0;
-            
-            // Determine status badge
-            let statusClass, statusText;
-            if (result.status === 'fetch-error') {
-                statusClass = 'error';
-                statusText = 'Failed';
-            } else if (result.totalErrors > 0) {
-                statusClass = 'error';
-                statusText = `${result.totalErrors} Error${result.totalErrors !== 1 ? 's' : ''}`;
-            } else if (result.totalWarnings > 0) {
-                statusClass = 'warning';
-                statusText = `${result.totalWarnings} Warning${result.totalWarnings !== 1 ? 's' : ''}`;
-            } else if (hasData) {
-                statusClass = 'success';
-                statusText = 'Valid';
-            } else {
-                statusClass = 'no-data';
-                statusText = 'No data';
-            }
-            
-            const googleTestUrl = getGoogleRichResultsUrl(result.url);
-
-            let cardHtml = `
-                <div class="url-card" data-index="${index}">
-                    <div class="url-header">
-                        <div class="url-left">
-                            <a href="${result.url}" target="_blank" class="url-link">${result.url}</a>
-                        </div>
-                        <div class="url-actions">
-                            <a href="${googleTestUrl}" target="_blank" class="google-test-link" title="Test in Google Rich Results">
-                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                                Rich Results Test
-                            </a>
-                            ${result.status === 'fetch-error' ? `
-                                <button class="btn-retest" onclick="retestUrl(${index})" title="Re-test this URL">↻ Re-test</button>
-                            ` : ''}
-                            <span class="status-badge ${statusClass}">${statusText}</span>
-                        </div>
-                    </div>`;
-
-            if (result.status === 'fetch-error') {
-                cardHtml += `
-                    <div class="error-content">
-                        <span class="error-text">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#ea4335"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                            ${result.error}
-                        </span>
-                    </div>`;
-            } else if (hasData) {
-                cardHtml += `
-                    <div class="detected-data-header">Detected structured data</div>
-                    <ul class="schema-list">`;
-
-                categories.forEach(([category, data]) => {
-                    const safeCategory = category.replace(/[^a-zA-Z0-9]/g, '_');
-                    const hasErrors = data.errors > 0;
-                    const hasWarnings = data.warnings > 0;
-                    
-                    let iconClass = 'valid';
-                    let iconSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-                    
-                    if (hasErrors) {
-                        iconClass = 'error';
-                        iconSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
-                    } else if (hasWarnings) {
-                        iconClass = 'warning';
-                        iconSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>';
-                    }
-                    
-                    let countText = `${data.items.length} valid item${data.items.length !== 1 ? 's' : ''} detected`;
-                    let countClass = '';
-                    if (hasErrors) {
-                        countText = `${data.items.length} item${data.items.length !== 1 ? 's' : ''}, ${data.errors} error${data.errors !== 1 ? 's' : ''}`;
-                        countClass = 'has-errors';
-                    } else if (hasWarnings) {
-                        countText = `${data.items.length} item${data.items.length !== 1 ? 's' : ''}, ${data.warnings} warning${data.warnings !== 1 ? 's' : ''}`;
-                        countClass = 'has-warnings';
-                    }
-                    
-                    cardHtml += `
-                        <li class="schema-item">
-                            <div class="schema-item-header" onclick="toggleCategory(${index}, '${safeCategory}')">
-                                <div class="schema-icon ${iconClass}">
-                                    ${iconSvg}
-                                </div>
-                                <div class="schema-info">
-                                    <div class="schema-name">${category}</div>
-                                </div>
-                                <div class="schema-count ${countClass}">${countText}</div>
-                                <div class="schema-arrow" data-arrow-card="${index}" data-arrow-category="${safeCategory}">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-                                </div>
-                            </div>
-                            <div class="schema-details" data-card="${index}" data-category="${safeCategory}">
-                                <div class="detected-items-header">Detected items</div>
-                                ${data.items.map((item, itemIdx) => {
-                                    const itemHasErrors = item.validation.errors.length > 0;
-                                    const itemHasWarnings = item.validation.warnings.length > 0;
-                                    
-                                    let detailIconClass = '';
-                                    let detailIconSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
-                                    
-                                    if (itemHasErrors) {
-                                        detailIconClass = 'error';
-                                        detailIconSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
-                                    } else if (itemHasWarnings) {
-                                        detailIconClass = 'warning';
-                                        detailIconSvg = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>';
-                                    }
-                                    
-                                    let validationHtml = '';
-                                    if (itemHasErrors || itemHasWarnings) {
-                                        validationHtml = '<div class="validation-issues">';
-                                        item.validation.errors.forEach(err => {
-                                            validationHtml += `
-                                                <div class="validation-issue error">
-                                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                                                    ${escapeHtml(err)}
-                                                </div>
-                                            `;
-                                        });
-                                        item.validation.warnings.forEach(warn => {
-                                            validationHtml += `
-                                                <div class="validation-issue warning">
-                                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
-                                                    ${escapeHtml(warn)}
-                                                </div>
-                                            `;
-                                        });
-                                        validationHtml += '</div>';
-                                    }
-                                    
-                                    return `
-                                        <div class="schema-item-detail">
-                                            <div class="schema-item-detail-header" onclick="toggleItem(${index}, '${safeCategory}', ${itemIdx})">
-                                                <div class="detail-icon ${detailIconClass}">
-                                                    ${detailIconSvg}
-                                                </div>
-                                                <div class="detail-name">${escapeHtml(item.name)}</div>
-                                                <div class="detail-arrow" data-item-arrow-card="${index}" data-item-arrow-category="${safeCategory}" data-item-arrow-item="${itemIdx}">
-                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                                                </div>
-                                            </div>
-                                            ${validationHtml}
-                                            <div class="schema-properties" data-props-card="${index}" data-props-category="${safeCategory}" data-props-item="${itemIdx}">
-                                                <div class="property-row">
-                                                    <span class="property-key">type</span>
-                                                    <span class="property-value">${escapeHtml(item.type)}</span>
-                                                </div>
-                                                ${renderObjectProperties(item.data)}
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        </li>`;
-                });
-
-                cardHtml += `</ul>`;
-            } else {
-                cardHtml += `<div class="no-data-message">No structured data detected on this page</div>`;
-            }
-
-            cardHtml += `</div>`;
-            return cardHtml;
-        }
-
-        function updateSummary() {
-            const summaryEl = document.getElementById('summary');
-            
-            const totalUrls = allResults.length;
-            const withData = allResults.filter(r => Object.keys(r.categories || {}).length > 0).length;
-            const fetchErrors = allResults.filter(r => r.status === 'fetch-error').length;
-            
-            // Count schema validation errors and warnings
-            let schemaErrors = 0;
-            let schemaWarnings = 0;
-            allResults.forEach(r => {
-                schemaErrors += r.totalErrors || 0;
-                schemaWarnings += r.totalWarnings || 0;
-            });
-
-            summaryEl.innerHTML = `
-                <div class="summary-item">
-                    <div class="summary-value">${totalUrls}</div>
-                    <div class="summary-label">Total URLs</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-value success">${withData}</div>
-                    <div class="summary-label">With Rich Results</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-value errors">${schemaErrors}</div>
-                    <div class="summary-label">Schema Errors</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-value warnings">${schemaWarnings}</div>
-                    <div class="summary-label">Warnings</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-value">${fetchErrors}</div>
-                    <div class="summary-label">Failed to Fetch</div>
-                </div>
-            `;
-        }
-
-        function displayResults(results) {
-            updateSummary();
-            document.getElementById('urlCards').innerHTML = results.map((result, index) => createUrlCard(result, index)).join('');
-            showResults();
-        }
-
-        function showStatus(text) {
-            document.getElementById('status').classList.add('active');
-            document.getElementById('statusText').textContent = text;
-        }
-
-        function hideStatus() {
-            document.getElementById('status').classList.remove('active');
-        }
-
+        
         function showError(message) {
-            const errorEl = document.getElementById('errorMessage');
-            errorEl.textContent = message;
-            errorEl.classList.add('active');
+            const el = document.getElementById('errorMessage');
+            el.textContent = message;
+            el.classList.add('active');
         }
-
+        
         function hideError() {
             document.getElementById('errorMessage').classList.remove('active');
         }
-
-        function showResults() {
-            document.getElementById('results').classList.add('active');
-        }
-
-        function hideResults() {
-            document.getElementById('results').classList.remove('active');
-        }
-
-        function updateProgress(percent) {
-            document.getElementById('progressFill').style.width = percent + '%';
-        }
-
-        function updateButton(loading) {
-            const btn = document.getElementById('analyzeBtn');
-            const btnText = document.getElementById('btnText');
+        
+        async function exportToHtml(uploadToGitHub) {
+            const total = allUrls.length;
+            const passed = Object.values(urlStatuses).filter(s => s.status === 'pass').length;
+            const failed = Object.values(urlStatuses).filter(s => s.status === 'fail').length;
+            const pending = total - passed - failed;
             
-            if (loading) {
-                btn.disabled = true;
-                btnText.innerHTML = '<span class="loading-spinner"></span>Testing...';
+            const sitemapUrl = document.getElementById('sitemapUrl').value.trim();
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+            
+            let tableRows = allUrls.map((url, index) => {
+                const status = urlStatuses[url];
+                const statusClass = status.status === 'pass' ? 'status-pass' : status.status === 'fail' ? 'status-fail' : 'status-pending';
+                const statusText = status.status === 'pass' ? '✓ PASS' : status.status === 'fail' ? '✗ FAIL' : '⏳ PENDING';
+                const googleUrl = getGoogleTestUrl(url);
+                
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td class="url-cell"><a href="${url}" target="_blank">${url}</a></td>
+                        <td><a href="${googleUrl}" target="_blank">Test Link</a></td>
+                        <td class="${statusClass}">${statusText}</td>
+                        <td>${escapeHtml(status.notes)}</td>
+                    </tr>
+                `;
+            }).join('');
+            
+            const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structured Data Test Report - ${new Date().toLocaleDateString()}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 30px; }
+        h1 { color: #333; margin-bottom: 10px; }
+        .subtitle { color: #666; margin-bottom: 30px; }
+        .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .summary-card { padding: 20px; border-radius: 8px; text-align: center; color: white; }
+        .summary-card.total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .summary-card.passed { background: #28a745; }
+        .summary-card.failed { background: #dc3545; }
+        .summary-card.pending { background: #6c757d; }
+        .summary-card h3 { font-size: 14px; margin-bottom: 8px; opacity: 0.9; }
+        .summary-card .number { font-size: 32px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; }
+        thead { background: #333; color: white; }
+        th { padding: 12px 8px; text-align: left; font-weight: 600; }
+        td { padding: 12px 8px; border-bottom: 1px solid #e9ecef; }
+        tbody tr:hover { background: #f8f9fa; }
+        .url-cell { max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .url-cell a { color: #1a0dab; text-decoration: none; }
+        .url-cell a:hover { text-decoration: underline; }
+        td a { color: #1a73e8; text-decoration: none; }
+        td a:hover { text-decoration: underline; }
+        .status-pass { color: #28a745; font-weight: 600; }
+        .status-fail { color: #dc3545; font-weight: 600; }
+        .status-pending { color: #6c757d; font-weight: 600; }
+        .report-info { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .report-info p { margin: 5px 0; color: #666; }
+        @media print { body { background: white; padding: 0; } .container { box-shadow: none; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Structured Data Test Report</h1>
+        <p class="subtitle">Google Rich Results Test Analysis</p>
+        
+        <div class="report-info">
+            <p><strong>Sitemap:</strong> ${escapeHtml(sitemapUrl)}</p>
+            <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+            <p><strong>Total URLs Analyzed:</strong> ${total}</p>
+        </div>
+        
+        <div class="summary-cards">
+            <div class="summary-card total">
+                <h3>Total URLs</h3>
+                <div class="number">${total}</div>
+            </div>
+            <div class="summary-card passed">
+                <h3>Passed</h3>
+                <div class="number">${passed}</div>
+            </div>
+            <div class="summary-card failed">
+                <h3>Failed</h3>
+                <div class="number">${failed}</div>
+            </div>
+            <div class="summary-card pending">
+                <h3>Pending</h3>
+                <div class="number">${pending}</div>
+            </div>
+        </div>
+        
+        <h2>Detailed Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>URL</th>
+                    <th>Google Test</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${tableRows}
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <h3>Legend</h3>
+            <p style="margin-top: 10px;">
+                <span class="status-pass">✓ PASS</span> - Structured data is valid<br>
+                <span class="status-fail">✗ FAIL</span> - Structured data has errors<br>
+                <span class="status-pending">⏳ PENDING</span> - Not yet tested
+            </p>
+        </div>
+    </div>
+</body>
+</html>`;
+            
+            const filename = `structured-data-report-${timestamp}.html`;
+            
+            if (uploadToGitHub) {
+                const token = document.getElementById('githubToken').value.trim();
+                const repo = document.getElementById('githubRepo').value.trim();
+                
+                if (!token || !repo) {
+                    alert('Please enter GitHub token and repository to upload.');
+                    return;
+                }
+                
+                // Save credentials
+                localStorage.setItem('github_token', token);
+                localStorage.setItem('github_repo', repo);
+                
+                try {
+                    document.getElementById('uploadBtn').disabled = true;
+                    document.getElementById('uploadBtn').innerHTML = '<span class="loading"></span> Uploading...';
+                    
+                    const path = `reports/${filename}`;
+                    const content = btoa(unescape(encodeURIComponent(htmlContent)));
+                    
+                    const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: `Add structured data report - ${new Date().toLocaleString()}`,
+                            content: content
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message || 'Failed to upload');
+                    }
+                    
+                    const repoOwner = repo.split('/')[0];
+                    const repoName = repo.split('/')[1];
+                    const reportUrl = `https://${repoOwner}.github.io/${repoName}/reports/${filename}`;
+                    
+                    document.getElementById('reportLinkInput').value = reportUrl;
+                    document.getElementById('reportLinkBox').style.display = 'block';
+                    
+                } catch (error) {
+                    alert('Failed to upload: ' + error.message);
+                } finally {
+                    document.getElementById('uploadBtn').disabled = false;
+                    document.getElementById('uploadBtn').textContent = '📤 Upload to GitHub Pages';
+                }
             } else {
-                btn.disabled = false;
-                btnText.textContent = 'Test Sitemap';
+                // Download locally
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.click();
+                URL.revokeObjectURL(link.href);
             }
         }
-
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+        
+        function copyReportLink() {
+            const input = document.getElementById('reportLinkInput');
+            input.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard!');
         }
-
-        document.getElementById('sitemapUrl').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') analyzeSitemap();
-        });
+        
+        function openReportLink() {
+            window.open(document.getElementById('reportLinkInput').value, '_blank');
+        }
     </script>
 </body>
 </html>
