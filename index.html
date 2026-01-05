@@ -732,32 +732,25 @@
                             <span class="url-arrow" id="arrow-${index}">▼</span>
                         </div>
                         <div class="url-details" id="details-${index}">
-                            <div class="tabs">
-                                <button class="tab-btn active" onclick="switchTab(${index}, 'richresults')">🔍 Rich Results Test</button>
-                                <button class="tab-btn" onclick="switchTab(${index}, 'page')">🌐 Page Preview</button>
-                            </div>
-                            
-                            <div class="tab-content active" id="tab-richresults-${index}">
-                                <div class="iframe-container">
-                                    <iframe src="${getGoogleTestUrl(url)}" loading="lazy"></iframe>
-                                </div>
-                            </div>
-                            
-                            <div class="tab-content" id="tab-page-${index}">
-                                <div class="iframe-container">
-                                    <iframe src="${url}" loading="lazy"></iframe>
-                                </div>
-                            </div>
-                            
-                            <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
-                                <a href="${getGoogleTestUrl(url)}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; background: #e8f0fe; border-radius: 4px; text-decoration: none; color: #1a73e8; font-size: 13px;">
-                                    <svg viewBox="0 0 24 24" fill="currentColor" style="width: 16px; height: 16px;"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-                                    Open in New Tab
+                            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                <a href="${getGoogleTestUrl(url)}" target="_blank" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; background: #1a73e8; border-radius: 6px; text-decoration: none; color: white; font-weight: 500;">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" style="width: 18px; height: 18px;"><path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5H9z"/></svg>
+                                    🔍 Open Rich Results Test
+                                </a>
+                                <a href="${url}" target="_blank" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; background: #28a745; border-radius: 6px; text-decoration: none; color: white; font-weight: 500;">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" style="width: 18px; height: 18px;"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                                    🌐 Open Page
                                 </a>
                             </div>
                             
-                            <div style="margin-top: 15px;">
-                                <label style="font-size: 13px; color: #666; font-weight: 600;">Notes:</label>
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                                <p style="color: #666; font-size: 13px; margin: 0;">
+                                    <strong>💡 Note:</strong> Google Rich Results Test cannot be embedded in iframes. Click the button above to open it in a new tab.
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <label style="font-size: 13px; color: #666; font-weight: 600; display: block; margin-bottom: 8px;">Notes:</label>
                                 <input type="text" class="notes-input" placeholder="Add notes about issues found..." 
                                     value="${escapeHtml(status.notes)}" 
                                     onchange="setNotes(${index}, this.value)">
@@ -825,31 +818,7 @@
             document.getElementById('showAllBtn').classList.remove('visible');
         }
         
-        function switchTab(index, tabName) {
-            // Update tab buttons
-            const item = document.querySelector(`.url-item[data-index="${index}"]`);
-            const tabBtns = item.querySelectorAll('.tab-btn');
-            tabBtns.forEach(btn => btn.classList.remove('active'));
-            
-            // Activate clicked tab button
-            if (tabName === 'richresults') {
-                tabBtns[0].classList.add('active');
-            } else {
-                tabBtns[1].classList.add('active');
-            }
-            
-            // Update tab content
-            const richResultsTab = document.getElementById(`tab-richresults-${index}`);
-            const pageTab = document.getElementById(`tab-page-${index}`);
-            
-            if (tabName === 'richresults') {
-                richResultsTab.classList.add('active');
-                pageTab.classList.remove('active');
-            } else {
-                richResultsTab.classList.remove('active');
-                pageTab.classList.add('active');
-            }
-        }
+
         
         function setNotes(index, notes) {
             const url = allUrls[index];
